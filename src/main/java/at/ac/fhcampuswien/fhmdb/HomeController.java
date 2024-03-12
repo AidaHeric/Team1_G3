@@ -52,7 +52,7 @@ public class HomeController implements Initializable {
                 "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE_FICTION", "SPORT", "THRILLER", "WAR",
                 "WESTERN");
         genreComboBox.setPromptText("Filter by Genre");
-
+        genreComboBox.setOnAction(actionEvent -> handleGenreFilter());
         // Set event handlers for buttons
         searchBtn.setOnAction(actionEvent -> handleSearch());
         sortBtn.setOnAction(actionEvent -> handleSort());
@@ -74,11 +74,18 @@ public class HomeController implements Initializable {
         // Update UI on the JavaFX Application Thread
         Platform.runLater(() -> observableMovies.setAll(filteredMovies));
     }
-
+    @FXML
+    public void handleGenreFilter() {
+        handleSearch();
+    }
     @FXML
     public void handleSort() {
-        // Update UI on the JavaFX Application Thread
-        Platform.runLater(() -> observableMovies.sort(Comparator.comparing(Movie::getTitle)));
+        String currentText = sortBtn.getText();
+        if (currentText.equals("Sort (asc)")) {
+            observableMovies.sort(Comparator.comparing(Movie::getTitle));
+        } else {
+            observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
+        }
+        sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
-
 }

@@ -15,7 +15,6 @@ public class Movie implements Comparable<Movie>{
         this.title = title;
         this.description = description;
         this.genres = genres;
-
     }
 
     public String getTitle() {
@@ -32,7 +31,7 @@ public class Movie implements Comparable<Movie>{
 
     // Add this method to get all genres
     public static List<String> getAllGenres() {
-        return Arrays.asList("ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY", "COMEDY",
+        return Arrays.asList("ALL","ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY", "COMEDY",
                 "CRIME", "DRAMA", "DOCUMENTARY", "FAMILY", "FANTASY", "HISTORY", "HORROR",
                 "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE_FICTION", "SPORT", "THRILLER", "WAR",
                 "WESTERN");

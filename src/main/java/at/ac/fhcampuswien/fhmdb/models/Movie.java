@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Arrays;
 
 
-public class Movie {
+public class Movie implements Comparable<Movie>{
     private String title;
-    private String description;
+    private final String description;
     // TODO add more properties here
     private List<String> genres;
 
@@ -41,6 +41,13 @@ public class Movie {
         movies.add(theGodfather);
         movies.add(inception);
         return movies;
+    }
+    @Override
+    public int compareTo(Movie movie) {
+        return this.title.compareTo(movie.getTitle());
+    }
+    public boolean containsString(String substring) {
+        return String.format("%s %s", title, description).toLowerCase().contains(substring.toLowerCase());
     }
 }
 

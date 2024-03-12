@@ -5,6 +5,7 @@ import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import java.net.URL;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class HomeController implements Initializable {
     @FXML
@@ -24,10 +26,10 @@ public class HomeController implements Initializable {
     public TextField searchField;
 
     @FXML
-    public JFXListView movieListView;
+    public JFXListView<Movie> movieListView;
 
     @FXML
-    public JFXComboBox genreComboBox;
+    public JFXComboBox<String> genreComboBox;
 
     @FXML
     public JFXButton sortBtn;
@@ -38,29 +40,45 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        observableMovies.addAll(allMovies);         // add dummy data to observable list
+        observableMovies.addAll(allMovies);
 
         // initialize UI stuff
-        movieListView.setItems(observableMovies);   // set data of observable list to list view
-        movieListView.setCellFactory(movieListView -> new MovieCell()); // use custom cell factory to display data
+        movieListView.setItems(observableMovies);
+        movieListView.setCellFactory(movieListView -> new MovieCell());
 
-        // TODO add genre filter items with genreComboBox.getItems().addAll(...)
+        // Add genre filter items to the combo box
+        genreComboBox.getItems().addAll("ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY", "COMEDY",
+                "CRIME", "DRAMA", "DOCUMENTARY", "FAMILY", "FANTASY", "HISTORY", "HORROR",
+                "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE_FICTION", "SPORT", "THRILLER", "WAR",
+                "WESTERN");
         genreComboBox.setPromptText("Filter by Genre");
 
-        // TODO add event handlers to buttons and call the regarding methods
-        // either set event handlers in the fxml file (onAction) or add them here
-
-        // Sort button example:
-        sortBtn.setOnAction(actionEvent -> {
-            if(sortBtn.getText().equals("Sort (asc)")) {
-                observableMovies.sort(Comparator.comparing(Movie::getTitle));
-                sortBtn.setText("Sort (desc)");
-            } else {
-                observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
-                sortBtn.setText("Sort (asc)");
-            }   //TODO: Funktioniert mit Filtern auch?
-        });
-
-
+        // Set event handlers for buttons
+        searchBtn.setOnAction(actionEvent -> handleSearch());
+        sortBtn.setOnAction(actionEvent -> handleSort());
     }
+
+    @FXML
+    public void handleSearch() {
+        String query = searchField.getText().toLowerCase();
+        String selectedGenre = genreComboBox.getValue();
+
+        List<Movie> filteredMovies = allMovies.stream()
+                .filter(movie ->
+                        (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
+                                (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query))) &&
+                                (selectedGenre == null || movie.getGenres().contains(selectedGenre.toUpperCase()))
+                )
+                .collect(Collectors.toList());
+
+        // Update UI on the JavaFX Application Thread
+        Platform.runLater(() -> observableMovies.setAll(filteredMovies));
+    }
+
+    @FXML
+    public void handleSort() {
+        // Update UI on the JavaFX Application Thread
+        Platform.runLater(() -> observableMovies.sort(Comparator.comparing(Movie::getTitle)));
+    }
+
 }

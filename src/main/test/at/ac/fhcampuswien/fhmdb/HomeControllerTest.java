@@ -1,8 +1,8 @@
-package at.ac.fhcampuswien.fhmdb;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class HomeControllerTest {
+public class HomeControllerTest {
     private HomeController controller;
 
     @Before
@@ -12,8 +12,6 @@ class HomeControllerTest {
 
     @Test
     public void testSearchFilter() {
-        // Add your test cases for search filtering
-        // For example:
         controller.searchField.setText("Godfather");
         controller.handleSearch();
         assertEquals(1, controller.observableMovies.size());
@@ -21,17 +19,13 @@ class HomeControllerTest {
 
     @Test
     public void testGenreFilter() {
-        // Add your test cases for genre filtering
-        // For example:
         controller.genreComboBox.setValue("ACTION");
-        controller.handleSearch();
+        controller.handleGenreFilter();
         assertEquals(2, controller.observableMovies.size());
     }
 
     @Test
     public void testSort() {
-        // Add your test cases for sorting
-        // For example:
         controller.handleSort();
         assertEquals("Sort (desc)", controller.sortBtn.getText());
         controller.handleSort();

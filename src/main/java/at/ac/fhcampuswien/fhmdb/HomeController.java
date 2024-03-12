@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -62,7 +63,6 @@ public class HomeController implements Initializable {
         String query = searchField.getText().toLowerCase();
         observableMovies.clear();
         List<Movie> filteredMovies;
-
         if(genreComboBox.getValue() != null && !genreComboBox.getValue().equals("ALL")){
             handleGenreFilter();
             filteredMovies = observableMovies.stream()
@@ -76,14 +76,14 @@ public class HomeController implements Initializable {
             filteredMovies = allMovies.stream()
                     .filter(movie ->
                             (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
-                                    (movie.getDescription().toLowerCase().contains(query)))
+                                    (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query)))
                     )
                     .distinct()
                     .collect(Collectors.toList());
         }
         // Update UI on the JavaFX Application Thread
-
         Platform.runLater(() -> observableMovies.addAll(filteredMovies));
+
     }
 
     @FXML
@@ -93,7 +93,12 @@ public class HomeController implements Initializable {
         observableMovies.clear();
 
         if (searchField.getText().isEmpty() && selectedGenre.equals("ALL")) {
-            filteredMovies = allMovies;
+            filteredMovies = allMovies.stream()
+                    .filter(movie ->
+                            movie.getGenres().contains(allMovies))
+                    .distinct()
+                    .collect(Collectors.toList());
+            Platform.runLater(() -> observableMovies.addAll(allMovies));
         } else {
             filteredMovies = allMovies.stream()
                     .filter(movie ->
@@ -102,12 +107,12 @@ public class HomeController implements Initializable {
                     .collect(Collectors.toList());
             // Update UI on the JavaFX Application Thread
 
-            Platform.runLater(() -> observableMovies.addAll(filteredMovies));
+        Platform.runLater(() -> observableMovies.addAll(filteredMovies));
         }
+    }
 
 
         //TODO update method to separate from search method; filter should be multiple choice, deselectable and unselectable
-    }
 
     @FXML
     public void handleSort() {

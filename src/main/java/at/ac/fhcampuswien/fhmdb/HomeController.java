@@ -38,6 +38,7 @@ public class HomeController implements Initializable {
     public JFXButton sortBtn;
 
     public List<Movie> allMovies = Movie.initializeMovies();
+    public List<Movie> genreFilteredMovies = new ArrayList<>();
 
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
@@ -61,58 +62,36 @@ public class HomeController implements Initializable {
     @FXML
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
-        observableMovies.clear();
-        List<Movie> filteredMovies;
-        if(genreComboBox.getValue() != null && !genreComboBox.getValue().equals("ALL")){
-            handleGenreFilter();
-            filteredMovies = observableMovies.stream()
-                    .filter(movie ->
-                            (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
-                                    (movie.getDescription().toLowerCase().contains(query)))
-                    )
-                    .distinct()
-                    .collect(Collectors.toList());
-        } else {
-            filteredMovies = allMovies.stream()
-                    .filter(movie ->
-                            (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
-                                    (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query)))
-                    )
-                    .distinct()
-                    .collect(Collectors.toList());
-        }
-        // Update UI on the JavaFX Application Thread
-        Platform.runLater(() -> observableMovies.addAll(filteredMovies));
 
+        List<Movie> filteredMovies = genreFilteredMovies.stream()
+                .filter(movie ->
+                        (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
+                                (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query)))
+                )
+                .distinct()
+                .toList();
+
+        observableMovies.clear();
+        Platform.runLater(() -> observableMovies.addAll(filteredMovies));
     }
 
     @FXML
     public void handleGenreFilter() {
         String selectedGenre = genreComboBox.getValue();
-        List<Movie> filteredMovies;
         observableMovies.clear();
-
-        if (searchField.getText().isEmpty() && selectedGenre.equals("ALL")) {
-            filteredMovies = allMovies.stream()
-                    .filter(movie ->
-                            movie.getGenres().contains(allMovies))
-                    .distinct()
-                    .collect(Collectors.toList());
-            Platform.runLater(() -> observableMovies.addAll(allMovies));
+        genreFilteredMovies.clear();
+        if (selectedGenre.equals("ALL")) {
+            genreFilteredMovies.addAll(allMovies);
         } else {
-            filteredMovies = allMovies.stream()
+            genreFilteredMovies = allMovies.stream()
                     .filter(movie ->
                             movie.getGenres().contains(selectedGenre))
                     .distinct()
                     .collect(Collectors.toList());
-            // Update UI on the JavaFX Application Thread
-
-        Platform.runLater(() -> observableMovies.addAll(filteredMovies));
         }
+
+        Platform.runLater(() -> observableMovies.addAll(genreFilteredMovies));
     }
-
-
-        //TODO update method to separate from search method; filter should be multiple choice, deselectable and unselectable
 
     @FXML
     public void handleSort() {

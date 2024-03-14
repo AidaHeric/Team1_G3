@@ -45,6 +45,7 @@ public class HomeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         observableMovies.addAll(allMovies);
+        genreFilteredMovies.addAll(allMovies);
 
         // initialize UI stuff
         movieListView.setItems(observableMovies);
@@ -63,7 +64,7 @@ public class HomeController implements Initializable {
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
 
-        List<Movie> filteredMovies = genreFilteredMovies.stream()
+        List<Movie> filteredMovies = genreFilteredMovies.stream()       //Filter already Genre-Filtered Movies
                 .filter(movie ->
                         (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
                                 (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query)))
@@ -80,10 +81,10 @@ public class HomeController implements Initializable {
         String selectedGenre = genreComboBox.getValue();
         observableMovies.clear();
         genreFilteredMovies.clear();
-        if (selectedGenre.equals("ALL")) {
+        if (selectedGenre.equals("ALL")) {                                  //add all movies, if all movies selected
             genreFilteredMovies.addAll(allMovies);
         } else {
-            genreFilteredMovies = allMovies.stream()
+            genreFilteredMovies = allMovies.stream()                        //add all movies with selected genre
                     .filter(movie ->
                             movie.getGenres().contains(selectedGenre))
                     .distinct()
@@ -95,7 +96,7 @@ public class HomeController implements Initializable {
 
     @FXML
     public void handleSort() {
-        String currentText = sortBtn.getText();
+        String currentText = sortBtn.getText();                              //sort ascending/descending
         if (currentText.equals("Sort (asc)")) {
             observableMovies.sort(Comparator.comparing(Movie::getTitle));
         } else {

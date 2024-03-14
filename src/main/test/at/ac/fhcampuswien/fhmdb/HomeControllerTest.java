@@ -1,7 +1,14 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextField;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class HomeControllerTest {
@@ -10,6 +17,11 @@ public class HomeControllerTest {
     @Before
     public void setUp() {
         controller = new HomeController();
+        Platform.startup(() -> {
+        });
+        Platform.runLater(() -> {
+            controller.searchField = new TextField();
+        });
     }
 
     @Test
@@ -29,8 +41,9 @@ public class HomeControllerTest {
     @Test
     public void testSort() {
         controller.handleSort();
-        assertEquals("Sort (desc)", controller.sortBtn.getText());
+        String currentText = controller.sortBtn.getText();
+        assertEquals("Sort (desc)", currentText);
         controller.handleSort();
-        assertEquals("Sort (asc)", controller.sortBtn.getText());
+        assertEquals("Sort (asc)", currentText);
     }
 }

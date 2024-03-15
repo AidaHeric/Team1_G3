@@ -34,7 +34,7 @@ public class HomeControllerTest {
 
 
     @Before
-    public void setUp() {
+    public void setUp() {                                                                                 //by ChatGPT
         //Initializing controller
         controller = new HomeController();
         //Initializing the JavaFX platform
@@ -108,7 +108,6 @@ public class HomeControllerTest {
                         filteredMovies.containsAll(controller.observableMovies) &&
                         controller.observableMovies.containsAll(filteredMovies))
         );
-
     }
 
     @Test

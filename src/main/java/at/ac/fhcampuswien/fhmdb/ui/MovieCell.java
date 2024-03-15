@@ -9,7 +9,9 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+// Custom implementation for displaying Movie objects
 public class  MovieCell extends ListCell<Movie> {
+    //UI components
     private final Label title = new Label();
     private final Label detail = new Label();
     private final VBox layout = new VBox(title, detail);
@@ -23,7 +25,9 @@ public class  MovieCell extends ListCell<Movie> {
             setText(null);
             setGraphic(null);
         } else {
+            //Set style class for the cell
             this.getStyleClass().add("movie-cell");
+            //Set text for title, genre and detail labels
             title.setText(movie.getTitle());
             genre.setText(movie.getGenres().toString());
             detail.setText(
@@ -33,19 +37,20 @@ public class  MovieCell extends ListCell<Movie> {
             );
 
 
-            // color scheme
+            // Set color scheme
             title.getStyleClass().add("text-yellow");
             detail.getStyleClass().add("text-white");
             genre.getStyleClass().add("text-white");
-            layout.setBackground(new Background(new BackgroundFill(Color.web("#777"), null, null)));
+            layout.setBackground(new Background(new BackgroundFill(Color.web("777"), null, null)));
 
-            // layout
+            // Configure layout
             title.fontProperty().set(title.getFont().font(20));
             detail.setMaxWidth(this.getScene().getWidth() - 30);
             detail.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
+            //Set the graphic of the cell to the layout VBox
             setGraphic(layout);
         }
     }

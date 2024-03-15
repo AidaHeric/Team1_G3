@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 
 import static at.ac.fhcampuswien.fhmdb.models.Movie.getAllGenres;
 
+// Controller class for managing the home view of the application
+
 public class HomeController implements Initializable {
     @FXML
     public JFXButton searchBtn;
@@ -37,17 +39,23 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton sortBtn;
 
+    // List of all movies
     public List<Movie> allMovies = Movie.initializeMovies();
+    // List of movies filtered by genre
     public List<Movie> genreFilteredMovies = new ArrayList<>();
 
+    // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
+
+    //Initialize the controller
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Add allMovies to observableMovies
         observableMovies.addAll(allMovies);
         genreFilteredMovies.addAll(allMovies);
 
-        // initialize UI stuff
+        // Initialize UI stuff
         movieListView.setItems(observableMovies);
         movieListView.setCellFactory(movieListView -> new MovieCell());
 
@@ -60,6 +68,7 @@ public class HomeController implements Initializable {
         sortBtn.setOnAction(actionEvent -> handleSort());
     }
 
+    //Search action
     @FXML
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
@@ -76,6 +85,7 @@ public class HomeController implements Initializable {
         Platform.runLater(() -> observableMovies.addAll(filteredMovies));
     }
 
+    // Genre filter action
     @FXML
     public void handleGenreFilter() {
         String selectedGenre = genreComboBox.getValue();
@@ -94,6 +104,7 @@ public class HomeController implements Initializable {
         Platform.runLater(() -> observableMovies.addAll(genreFilteredMovies));
     }
 
+    // Sorting action
     @FXML
     public void handleSort() {
         String currentText = sortBtn.getText();                              //sort ascending/descending

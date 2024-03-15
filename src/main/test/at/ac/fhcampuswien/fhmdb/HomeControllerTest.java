@@ -29,6 +29,7 @@ public class HomeControllerTest {
     public List<Movie> allMovies = Movie.initializeMovies();
     //List of filtered movies
     List<Movie> filteredMovies = new ArrayList<>();
+    private boolean isToolkitInitalizized = false;
 
     @Before
     public void setUp() {
@@ -42,12 +43,26 @@ public class HomeControllerTest {
         });
     }
 
-   /* @Test
-    public void testSearchFilter() {
+   @Test
+    public void testQueryFilter() {
+       Platform.runLater(() -> {
         controller.searchField.setText("Godfather");
         controller.handleSearch();
         assertEquals(1, controller.observableMovies.size());
-    }*/
+       });
+    }
+
+    @Test
+    public void testQueryandGenreFilter() {
+        Platform.runLater(() -> {
+            controller.searchField.setText("Godfather");
+            controller.genreComboBox.setValue("DRAMA");
+            controller.handleGenreFilter();
+            controller.handleSearch();
+            assertEquals(1, controller.observableMovies.size());
+        });
+    }
+
 
     @Test
     public void testAllGenresNoQueryAfterFilter(){

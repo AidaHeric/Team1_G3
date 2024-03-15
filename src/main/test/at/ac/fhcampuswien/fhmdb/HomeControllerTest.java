@@ -29,18 +29,23 @@ public class HomeControllerTest {
     public List<Movie> allMovies = Movie.initializeMovies();
     //List of filtered movies
     List<Movie> filteredMovies = new ArrayList<>();
-    private boolean isToolkitInitalizized = false;
+    private static boolean toolkitInitialized = false;
+
 
     @Before
     public void setUp() {
         //Initializing controller
         controller = new HomeController();
         //Initializing the JavaFX platform
-        Platform.startup(() -> {
-            controller.searchField = new TextField(); //Initializing the search field
-            controller.genreComboBox = new JFXComboBox(); //Initializing the genre ComboBox
-            controller.sortBtn = new JFXButton(); //Initializing the sort button
-        });
+        if(!toolkitInitialized){
+            Platform.startup(() -> {
+                new JFXPanel();
+                controller.searchField = new TextField(); //Initializing the search field
+                controller.genreComboBox = new JFXComboBox(); //Initializing the genre ComboBox
+                controller.sortBtn = new JFXButton(); //Initializing the sort button
+            });
+            toolkitInitialized = true;
+        }
     }
 
    @Test

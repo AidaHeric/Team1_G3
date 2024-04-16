@@ -26,10 +26,17 @@ public class HomeControllerTest {
     HomeController controller = new HomeController();
 
     //List of all movies
-    public List<Movie> allMovies = Movie.initializeMovies();
+    List<Movie> allMovies = new ArrayList<>();
+
     //List of filtered movies
     List<Movie> filteredMovies = new ArrayList<>();
+
     private static boolean toolkitInitialized = false;
+
+    public void addToAllMovies(){
+        Movie starWars = new Movie("Star Wars: Episode IV - A New Hope", "A farm boy joins a rebel alliance to save the galaxy from an evil empire.", List.of("ACTION", "ADVENTURE", "SCIENCE_FICTION"));
+        allMovies.add(starWars);
+    }
 
 
 

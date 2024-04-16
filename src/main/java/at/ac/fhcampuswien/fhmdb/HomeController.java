@@ -39,9 +39,8 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton sortBtn;
 
-    // List of all movies
     public List<Movie> allMovies = Movie.initializeMovies();
-    // List of movies filtered by genre
+
     public List<Movie> genreFilteredMovies = new ArrayList<>();
 
     // Observable list of movies for dynamic UI updates

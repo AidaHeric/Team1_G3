@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+import api.MovieAPI;
+
+
 import static at.ac.fhcampuswien.fhmdb.models.Movie.getAllGenres;
 
 // Controller class for managing the home view of the application
@@ -114,4 +117,19 @@ public class HomeController implements Initializable {
         }
         sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
+
+    @Override
+    public static List<Movie> initializeMovies() {
+        List<Movie> movies = new ArrayList<>();
+        try {
+            List<Movie> fetchedMovies = MovieAPI.fetchAllMovies(); // This method should be in your MovieAPI class
+            if (fetchedMovies != null) {
+                movies.addAll(fetchedMovies);
+            }
+        } catch (IOException e) {
+            System.err.println("Error fetching movies from API: " + e.getMessage());
+        }
+        return movies;
+    }
+
 }

@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import static javafx.application.Platform.runLater;
 import static org.junit.Assert.*;
+
 
 // Tests for the HomeController.java
 public class HomeControllerTest {

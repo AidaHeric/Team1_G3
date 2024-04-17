@@ -18,8 +18,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import java.io.IOException;
 
-import api.MovieAPI;
+import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 
 import static at.ac.fhcampuswien.fhmdb.models.Movie.getAllGenres;
@@ -118,11 +119,11 @@ public class HomeController implements Initializable {
         sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
 
-    @Override
+    /*@Override
     public static List<Movie> initializeMovies() {
         List<Movie> movies = new ArrayList<>();
         try {
-            List<Movie> fetchedMovies = MovieAPI.fetchAllMovies(); // This method should be in your MovieAPI class
+            List<Movie> fetchedMovies = MovieAPI.getAllMovies(); // This method should be in your MovieAPI class
             if (fetchedMovies != null) {
                 movies.addAll(fetchedMovies);
             }
@@ -130,6 +131,6 @@ public class HomeController implements Initializable {
             System.err.println("Error fetching movies from API: " + e.getMessage());
         }
         return movies;
-    }
+    }*/
 
 }

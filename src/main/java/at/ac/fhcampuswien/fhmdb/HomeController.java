@@ -13,10 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 
@@ -133,6 +130,32 @@ public class HomeController implements Initializable {
         }
         sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
+
+    String getMostPopularActor(List<Movie> movies){
+        Map<Object, Long> maincastMap = movies.stream()
+                .flatMap(eachMovie -> eachMovie.getMainCast().stream())
+                .collect(Collectors.groupingBy(mainCast -> mainCast, Collectors.counting()));
+
+        String mostPopular = "";
+        mostPopular = String.valueOf(maincastMap.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey));
+        return mostPopular;
+    }
+
+    int getLongestMovieTitle(List<Movie> movies){
+      return movies.stream().mapToInt(eachMovie -> eachMovie.getTitle().length()).max().orElse(0);
+    }
+
+    long countMoviesFrom(List<Movie> movies, String director){
+        return movies.stream().filter(eachMovie -> eachMovie.getDirectors().contains(director)).count();
+    }
+
+    List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear){
+        return movies.stream()
+                .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
+                .collect(Collectors.toList());
+    }
+
+
 
 
 }

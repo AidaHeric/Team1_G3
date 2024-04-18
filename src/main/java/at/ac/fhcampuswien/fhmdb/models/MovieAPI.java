@@ -2,10 +2,12 @@ package at.ac.fhcampuswien.fhmdb.models;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 
 import com.google.gson.Gson;
 import okhttp3.*;
+import com.google.gson.reflect.TypeToken;
 
 public class MovieAPI {
 
@@ -54,11 +56,12 @@ public class MovieAPI {
     private List<Movie> executeRequest (Request request) throws IOException {
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected response code: " + response); //IOException wird ausgegeben
+                throw new IOException("Unexpected response code: " + response);
             }
             String jsonResponse = response.body().string();
-            Movie movieList = gson.fromJson(jsonResponse, Movie.class);
-            return movieList.getMovies; //TODO
+            Type movieListType = new TypeToken<ArrayList<Movie>>(){}.getType();
+            List<Movie> movieList = gson.fromJson(jsonResponse, movieListType);
+            return movieList;
         }
     }
 

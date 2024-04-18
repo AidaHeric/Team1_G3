@@ -52,23 +52,26 @@ public class HomeController implements Initializable {
 
 
     //Initialize the controller
-    @Override
-    public void initialize(URL MoviesURL, ResourceBundle resourceBundle) {
-        // Add allMovies to observableMovies
+    public void initialize(URL location, ResourceBundle resources) {
+        observableMovies = FXCollections.observableArrayList();
+
+        //MovieAPI movieAPI = new MovieAPI();
+        //List<Movie> movies = movieAPI.getAllMovies();
+
         observableMovies.addAll(allMovies);
-        genreFilteredMovies.addAll(allMovies);
 
-        // Initialize UI stuff
         movieListView.setItems(observableMovies);
-        movieListView.setCellFactory(movieListView -> new MovieCell());
 
-        // Add genre filter items to the combo box
-        genreComboBox.getItems().addAll(getAllGenres());
+        genreComboBox.setItems(FXCollections.observableArrayList(getAllGenres()));
         genreComboBox.setPromptText("Filter by Genre");
-        genreComboBox.setOnAction(actionEvent -> handleGenreFilter());
-        // Set event handlers for buttons
-        searchBtn.setOnAction(actionEvent -> handleSearch());
-        sortBtn.setOnAction(actionEvent -> handleSort());
+        genreComboBox.setOnAction(event -> handleGenreFilter());
+        genreComboBox.getItems().add(0, "ALL");
+        genreComboBox.setValue("ALL");
+
+        movieListView.setCellFactory(param -> new MovieCell());
+        searchBtn.setOnAction(event -> handleSearch());
+        sortBtn.setOnAction(event -> handleSort());
+
     }
 
     //Search action

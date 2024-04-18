@@ -6,16 +6,25 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 // Custom implementation for displaying Movie objects
-public class  MovieCell extends ListCell<Movie> {
+public class MovieCell extends ListCell<Movie> {
     //UI components
     private final Label title = new Label();
     private final Label detail = new Label();
-    private final VBox layout = new VBox(title, detail);
+    //private final VBox layout = new VBox(title, detail);
     private final Label genre = new Label();
+    private final Label releaseYear = new Label();
+    private final Label rating = new Label();
+    private final HBox header = new HBox(title);
+    private final HBox year = new HBox(releaseYear);
+    private final HBox description = new HBox(detail);
+    private final HBox genresAndRating = new HBox(genre, rating);
+    private final VBox layout = new VBox(header,year, description, genresAndRating);
+
 
     @Override
     protected void updateItem(Movie movie, boolean empty) {
@@ -25,34 +34,41 @@ public class  MovieCell extends ListCell<Movie> {
             setText(null);
             setGraphic(null);
         } else {
-            //Set style class for the cell
             this.getStyleClass().add("movie-cell");
-            //Set text for title, genre and detail labels
             title.setText(movie.getTitle());
+            releaseYear.setText("Released: " + Integer.toString(movie.getReleaseYear()));
             genre.setText(movie.getGenres().toString());
             detail.setText(
                     movie.getDescription() != null
                             ? movie.getDescription()
                             : "No description available"
             );
+            //TODO: make Genres a String
+            //genre.setText(movie.getGenres().toString());
+            rating.setText("Rating: " + movie.getRating());
 
 
-            // Set color scheme
+            //colour scheme
             title.getStyleClass().add("text-yellow");
+            releaseYear.getStyleClass().add("text-white");
             detail.getStyleClass().add("text-white");
+            rating.getStyleClass().add("text-white");
             genre.getStyleClass().add("text-white");
             layout.setBackground(new Background(new BackgroundFill(Color.web("777"), null, null)));
 
             // Configure layout
             title.fontProperty().set(title.getFont().font(20));
+            //releaseYear.fontProperty().set(title.getFont().font(20));
             detail.setMaxWidth(this.getScene().getWidth() - 30);
             detail.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
+
             //Set the graphic of the cell to the layout VBox
             setGraphic(layout);
         }
     }
+
 }
 

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 public class Movie implements Comparable<Movie>{
+    public List<Movie> getMovies;
     private String title;                   //Mithilfe von Swagger
     private String description;
     private List<String> genres;            //TODO: Enum array/list
@@ -105,10 +106,7 @@ public class Movie implements Comparable<Movie>{
     public double getRating() {
         return rating;
     }
-
-    public List<Movie> getMovies() {
-        return null;
-    }
+    
 }
 
 

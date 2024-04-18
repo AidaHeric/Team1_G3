@@ -58,7 +58,7 @@ public class MovieAPI {
             }
             String jsonResponse = response.body().string();
             Movie movieList = gson.fromJson(jsonResponse, Movie.class);
-            return movieList.getMovies();
+            return movieList.getMovies;
         }
     }
 

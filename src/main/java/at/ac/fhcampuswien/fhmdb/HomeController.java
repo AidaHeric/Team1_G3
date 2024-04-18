@@ -53,7 +53,7 @@ public class HomeController implements Initializable {
 
     //Initialize the controller
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL MoviesURL, ResourceBundle resourceBundle) {
         // Add allMovies to observableMovies
         observableMovies.addAll(allMovies);
         genreFilteredMovies.addAll(allMovies);
@@ -131,6 +131,6 @@ public class HomeController implements Initializable {
             System.err.println("Error fetching movies from API: " + e.getMessage());
         }
         return movies;
-    }*/
+    }*/ //Aida auskommentiert wegen MovieAPI
 
 }

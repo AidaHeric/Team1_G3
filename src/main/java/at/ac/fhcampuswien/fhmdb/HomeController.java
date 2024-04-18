@@ -41,6 +41,12 @@ public class HomeController implements Initializable {
     public JFXComboBox<String> genreComboBox;
 
     @FXML
+    public TextField releaseYear;
+
+    @FXML
+    public TextField rating;
+
+    @FXML
     public JFXButton sortBtn;
 
     public List<Movie> allMovies = Movie.initializeMovies();
@@ -65,7 +71,6 @@ public class HomeController implements Initializable {
         genreComboBox.setItems(FXCollections.observableArrayList(getAllGenres()));
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.setOnAction(event -> handleGenreFilter());
-        genreComboBox.getItems().add(0, "ALL");
         genreComboBox.setValue("ALL");
 
         movieListView.setCellFactory(param -> new MovieCell());
@@ -78,11 +83,18 @@ public class HomeController implements Initializable {
     @FXML
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
+        String genre = genreComboBox.getValue();
+
+        int year = releaseYear.getText().isEmpty() ? 0 : Integer.parseInt(releaseYear.getText());
+        double rating = this.rating.getText().isEmpty() ? 0 : Double.parseDouble(this.rating.getText());
 
         List<Movie> filteredMovies = genreFilteredMovies.stream()       //Filter already Genre-Filtered Movies
                 .filter(movie ->
                         (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
-                                (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query)))
+                                (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query))) &&
+                                (genre.equals("ALL") || movie.getGenres().contains(genre)) &&
+                                (year == 0 || movie.getReleaseYear() == year) &&
+                                (rating == 0 || movie.getRating() == rating)
                 )
                 .distinct()
                 .toList();
@@ -122,18 +134,5 @@ public class HomeController implements Initializable {
         sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
 
-    /*@Override
-    public static List<Movie> initializeMovies() {
-        List<Movie> movies = new ArrayList<>();
-        try {
-            List<Movie> fetchedMovies = MovieAPI.getAllMovies(); // This method should be in your MovieAPI class
-            if (fetchedMovies != null) {
-                movies.addAll(fetchedMovies);
-            }
-        } catch (IOException e) {
-            System.err.println("Error fetching movies from API: " + e.getMessage());
-        }
-        return movies;
-    }*/ //Aida auskommentiert wegen MovieAPI
 
 }

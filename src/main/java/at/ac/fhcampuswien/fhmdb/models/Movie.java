@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Arrays;
-import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
+
 
 public class Movie implements Comparable<Movie>{
     private String title;                   //Mithilfe von Swagger
@@ -18,11 +18,7 @@ public class Movie implements Comparable<Movie>{
     private List<String> mainCast;
     private double rating;
 
-    /*public Movie(String title, String description, List<String> genres) {
-        this.title = title;
-        this.description = description;
-        this.genres = genres;
-    }*/
+
 
     public Movie(String id, String title, String description, List<String> genres, int releaseYear, int lengthInMinutes, String imgUrl, List<String> directors, List<String> mainCast, double rating){
         this.id = id;
@@ -59,9 +55,9 @@ public class Movie implements Comparable<Movie>{
     public int compareTo(Movie movie) {
         return this.title.compareTo(movie.getTitle());
     }
-    public boolean containsString(String substring) { //Checks if the string of title and description contains the given substring
+    /*public boolean containsString(String substring) { //Checks if the string of title and description contains the given substring
         return String.format("%s %s", title, description).toLowerCase().contains(substring.toLowerCase());
-    }
+    }*/
 
     public String getTitle() {
         return title;

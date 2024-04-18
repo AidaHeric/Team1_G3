@@ -25,6 +25,7 @@ public class MovieAPI {
         try {
             Request request = new Request.Builder()
                     .url(MoviesURL)
+                    .header("User-Agent", "http.agent")
                     .build();
             return executeRequest(request);
         } catch (IOException e) {

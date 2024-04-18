@@ -35,10 +35,10 @@ public class HomeControllerTest {
 
     private static boolean toolkitInitialized = false;
 
-    public void addToAllMovies(){
+    /*public void addToAllMovies(){
         Movie starWars = new Movie("Star Wars: Episode IV - A New Hope", "A farm boy joins a rebel alliance to save the galaxy from an evil empire.", List.of("ACTION", "ADVENTURE", "SCIENCE_FICTION"));
         allMovies.add(starWars);
-    }
+    }*/
 
 
 

@@ -7,7 +7,6 @@ import java.util.Arrays;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 public class Movie implements Comparable<Movie>{
-    public List<Movie> getMovies;
     private String title;                   //Mithilfe von Swagger
     private String description;
     private List<String> genres;            //TODO: Enum array/list
@@ -19,11 +18,11 @@ public class Movie implements Comparable<Movie>{
     private List<String> mainCast;
     private double rating;
 
-    public Movie(String title, String description, List<String> genres) {
+    /*public Movie(String title, String description, List<String> genres) {
         this.title = title;
         this.description = description;
         this.genres = genres;
-    }
+    }*/
 
     public Movie(String id, String title, String description, List<String> genres, int releaseYear, int lengthInMinutes, String imgUrl, List<String> directors, List<String> mainCast, double rating){
         this.id = id;
@@ -52,11 +51,8 @@ public class Movie implements Comparable<Movie>{
         MovieAPI movieAPI = new MovieAPI();
 
         List<Movie> fetchedMovies = movieAPI.getAllMovies();
-        if (fetchedMovies != null) {
             movies.addAll(fetchedMovies);
-        }
         return movies;
-
     }
 
     @Override

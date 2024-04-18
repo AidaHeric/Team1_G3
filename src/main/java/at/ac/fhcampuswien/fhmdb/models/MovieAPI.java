@@ -54,11 +54,11 @@ public class MovieAPI {
     private List<Movie> executeRequest (Request request) throws IOException {
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                throw new IOException("Unexpected response code: " + response);
+                throw new IOException("Unexpected response code: " + response); //IOException wird ausgegeben
             }
             String jsonResponse = response.body().string();
             Movie movieList = gson.fromJson(jsonResponse, Movie.class);
-            return movieList.getMovies;
+            return movieList.getMovies; //TODO
         }
     }
 

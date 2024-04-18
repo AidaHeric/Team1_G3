@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -20,11 +21,9 @@ import java.io.IOException;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 
-import static at.ac.fhcampuswien.fhmdb.models.Movie.getAllGenres;
-
-// Controller class for managing the home view of the application
-
 public class HomeController implements Initializable {
+
+    MovieAPI movieAPI = new MovieAPI();
     @FXML
     public JFXButton searchBtn;
 
@@ -35,7 +34,7 @@ public class HomeController implements Initializable {
     public JFXListView<Movie> movieListView;
 
     @FXML
-    public JFXComboBox<String> genreComboBox;
+    public JFXComboBox<Genre> genreComboBox;
 
     @FXML
     public TextField releaseYear;
@@ -54,7 +53,6 @@ public class HomeController implements Initializable {
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
-    //Initialize the controller
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
 
@@ -65,10 +63,11 @@ public class HomeController implements Initializable {
 
         movieListView.setItems(observableMovies);
 
-        genreComboBox.setItems(FXCollections.observableArrayList(getAllGenres()));
+
+        genreComboBox.getItems().addAll(Genre.values());
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.setOnAction(event -> handleGenreFilter());
-        genreComboBox.setValue("ALL");
+        genreComboBox.setValue(Genre.ALL);
 
         movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
@@ -80,7 +79,7 @@ public class HomeController implements Initializable {
     @FXML
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
-        String genre = genreComboBox.getValue();
+        Genre genre = genreComboBox.getValue();
 
         int year = releaseYear.getText().isEmpty() ? 0 : Integer.parseInt(releaseYear.getText());
         double rating = this.rating.getText().isEmpty() ? 0 : Double.parseDouble(this.rating.getText());
@@ -89,7 +88,7 @@ public class HomeController implements Initializable {
                 .filter(movie ->
                         (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
                                 (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query))) &&
-                                (genre.equals("ALL") || movie.getGenres().contains(genre)) &&
+                                (genre.equals(Genre.ALL) || movie.getGenres().contains(genre)) &&
                                 (year == 0 || movie.getReleaseYear() == year) &&
                                 (rating == 0 || movie.getRating() == rating)
                 )
@@ -103,10 +102,11 @@ public class HomeController implements Initializable {
     // Genre filter action
     @FXML
     public void handleGenreFilter() {
-        String selectedGenre = genreComboBox.getValue();
+        Genre selectedGenre = genreComboBox.getValue();
+
         observableMovies.clear();
         genreFilteredMovies.clear();
-        if (selectedGenre.equals("ALL")) {                                  //add all movies, if all movies selected
+        if (selectedGenre.equals(Genre.ALL)) {                                  //add all movies, if all movies selected
             genreFilteredMovies.addAll(allMovies);
         } else {
             genreFilteredMovies = allMovies.stream()                        //add all movies with selected genre

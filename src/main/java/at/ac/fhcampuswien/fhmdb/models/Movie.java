@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class Movie implements Comparable<Movie>{
     private String title;                   //Mithilfe von Swagger
     private String description;
-    private List<String> genres;            //TODO: Enum array/list
+    private List<Genre> genres;
     private String id;
     private int releaseYear;
     private String imgUrl;
@@ -20,7 +20,7 @@ public class Movie implements Comparable<Movie>{
 
 
 
-    public Movie(String id, String title, String description, List<String> genres, int releaseYear, int lengthInMinutes, String imgUrl, List<String> directors, List<String> mainCast, double rating){
+    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, int lengthInMinutes, String imgUrl, List<String> directors, List<String> mainCast, double rating){
         this.id = id;
         this.title = title;
         this.description = description;
@@ -33,12 +33,12 @@ public class Movie implements Comparable<Movie>{
         this.rating = rating;
     }
 
-    public static List<String> getAllGenres() {
+    /*public static List<String> getAllGenres() {
         return Arrays.asList("ALL","ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY", "COMEDY",
                 "CRIME", "DRAMA", "DOCUMENTARY", "FAMILY", "FANTASY", "HISTORY", "HORROR",
                 "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE_FICTION", "SPORT", "THRILLER", "WAR",
                 "WESTERN");
-    }
+    }*/
 
     //DONE New initalizeMovies with API
 
@@ -67,7 +67,7 @@ public class Movie implements Comparable<Movie>{
         return description;
     }
 
-    public List<String> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 

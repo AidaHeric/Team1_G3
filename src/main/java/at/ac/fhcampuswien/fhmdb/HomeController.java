@@ -59,6 +59,8 @@ public class HomeController implements Initializable {
         //MovieAPI movieAPI = new MovieAPI();
         //List<Movie> movies = movieAPI.getAllMovies();
 
+        // GET movies from API
+        allMovies = Movie.initializeMovies();
         observableMovies.addAll(allMovies);
 
         movieListView.setItems(observableMovies);

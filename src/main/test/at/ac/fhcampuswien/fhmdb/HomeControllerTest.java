@@ -212,6 +212,11 @@ public class HomeControllerTest {
         assertFalse(movies.isEmpty());
     }
 
+    @AfterAll
+    static void done() {
+        log.info("All tests are done.");
+    }
+
 }
 
 

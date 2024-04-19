@@ -43,11 +43,16 @@ public class Movie implements Comparable<Movie>{
     //DONE New initalizeMovies with API
 
     public static List<Movie> initializeMovies(){
-        List<Movie> movies = new ArrayList<>();
+        /*List<Movie> movies = new ArrayList<>();
         MovieAPI movieAPI = new MovieAPI();
 
         List<Movie> fetchedMovies = movieAPI.getAllMovies();
             movies.addAll(fetchedMovies);
+        return movies;*/
+
+        //API integration
+        MovieAPI movieAPI = new MovieAPI();
+        List<Movie> movies = movieAPI.getAllMovies();
         return movies;
     }
 

@@ -194,6 +194,24 @@ public class HomeControllerTest {
         assertEquals(0, movie1.compareTo(movie1));
     }
 
+    @Test
+    public void testGetAllMovies() {
+        MovieAPI movieAPI = new MovieAPI();
+        List<Movie> movies = movieAPI.getAllMovies();
+
+        assertNotNull(movies);
+        assertFalse(movies.isEmpty());
+    }
+
+    @Test
+    public void testSearchMovies() {
+        MovieAPI movieAPI = new MovieAPI();
+        List<Movie> movies = movieAPI.searchMovies("Action", Genre.ACTION, 2022, 8.0);
+
+        assertNotNull(movies);
+        assertFalse(movies.isEmpty());
+    }
+
 }
 
 

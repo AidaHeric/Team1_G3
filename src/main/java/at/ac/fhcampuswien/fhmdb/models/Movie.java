@@ -19,7 +19,6 @@ public class Movie implements Comparable<Movie>{
     private double rating;
 
 
-
     public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, int lengthInMinutes, String imgUrl, List<String> directors, List<String> mainCast, double rating){
         this.id = id;
         this.title = title;
@@ -32,15 +31,6 @@ public class Movie implements Comparable<Movie>{
         this.mainCast = mainCast;
         this.rating = rating;
     }
-
-    /*public static List<String> getAllGenres() {
-        return Arrays.asList("ALL","ACTION", "ADVENTURE", "ANIMATION", "BIOGRAPHY", "COMEDY",
-                "CRIME", "DRAMA", "DOCUMENTARY", "FAMILY", "FANTASY", "HISTORY", "HORROR",
-                "MUSICAL", "MYSTERY", "ROMANCE", "SCIENCE_FICTION", "SPORT", "THRILLER", "WAR",
-                "WESTERN");
-    }*/
-
-    //DONE New initalizeMovies with API
 
     public static List<Movie> initializeMovies(){
         /*List<Movie> movies = new ArrayList<>();

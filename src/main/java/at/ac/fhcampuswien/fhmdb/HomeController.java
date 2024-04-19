@@ -119,8 +119,7 @@ public class HomeController implements Initializable {
         */
 
         observableMovies.clear();
-        //Platform.runLater(() -> observableMovies.addAll(filteredMovies));
-        Platform.runLater(() -> observableMovies.addAll(movielist));
+        observableMovies.addAll(movielist);
 
     }
 
@@ -140,7 +139,7 @@ public class HomeController implements Initializable {
                     .collect(Collectors.toList());
         }
 
-        Platform.runLater(() -> observableMovies.addAll(genreFilteredMovies));
+       observableMovies.addAll(genreFilteredMovies);
     }
 
     // Sorting action
@@ -161,7 +160,7 @@ public class HomeController implements Initializable {
                 .collect(Collectors.groupingBy(mainCast -> mainCast, Collectors.counting()));
 
         String mostPopular = "";
-        mostPopular = String.valueOf(maincastMap.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey));
+        mostPopular = String.valueOf(maincastMap.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(""));
         return mostPopular;
     }
 

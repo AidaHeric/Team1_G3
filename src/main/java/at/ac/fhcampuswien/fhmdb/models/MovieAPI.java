@@ -47,7 +47,7 @@ public class MovieAPI {
                 URLBuilder.addQueryParameter("releaseYear", String.valueOf(releaseYear));
             }
             if (rating != 0.0) {
-                URLBuilder.addQueryParameter("rating", String.valueOf(rating));
+                URLBuilder.addQueryParameter("ratingFrom", String.valueOf(rating));
             }
             String URL = URLBuilder.build().toString();
             System.out.println(URL);

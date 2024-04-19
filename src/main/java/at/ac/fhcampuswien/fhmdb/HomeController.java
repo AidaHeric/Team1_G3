@@ -77,7 +77,7 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        //releaseYearComboBox.setValue("YEAR");
+        //releaseYearComboBox.setValue(0);
 
         ratingComboBox.getItems().add(0.0);
         ratingComboBox.getItems().addAll((allMovies.stream()

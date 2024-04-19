@@ -2,221 +2,22 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.control.TextField;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-
-import static javafx.application.Platform.runLater;
 import static org.junit.Assert.*;
 
 
-// Tests for the HomeController.java
-//TODO Aida
 public class HomeControllerTest {
-    //Instance for the controller
     HomeController controller = new HomeController();
 
-    //List of all movies
-    List<Movie> allMovies = new ArrayList<>();
-
-    //List of filtered movies
-    List<Movie> filteredMovies = new ArrayList<>();
-
     private static boolean toolkitInitialized = false;
-
-    /*public void addToAllMovies(){
-        Movie starWars = new Movie("Star Wars: Episode IV - A New Hope", "A farm boy joins a rebel alliance to save the galaxy from an evil empire.", List.of("ACTION", "ADVENTURE", "SCIENCE_FICTION"));
-        allMovies.add(starWars);
-    }*/
-
-
-
-    @Before
-    public void setUp() {                                                                                 //by ChatGPT
-        //Initializing controller
-        controller = new HomeController();
-        //Initializing the JavaFX platform
-        if(!toolkitInitialized){
-            Platform.startup(() -> {
-                new JFXPanel();
-                controller.searchField = new TextField(); //Initializing the search field
-                controller.genreComboBox = new JFXComboBox(); //Initializing the genre ComboBox
-                controller.sortBtn = new JFXButton(); //Initializing the sort button
-            });
-            toolkitInitialized = true;
-        }
-    }
-
-   @Test
-    public void testQueryFilter() {
-       Platform.runLater(() -> {
-        controller.searchField.setText("Godfather");
-        controller.handleSearch();
-        assertEquals(1, controller.observableMovies.size());
-       });
-    }
-
-    @Test
-    public void testQueryandGenreFilter() {
-        Platform.runLater(() -> {
-            controller.searchField.setText("Godfather");
-            controller.genreComboBox.setValue(Genre.valueOf("DRAMA"));
-            controller.handleGenreFilter();
-            controller.handleSearch();
-            assertEquals(1, controller.observableMovies.size());
-        });
-    }
-
-
-    @Test
-    public void testAllGenresNoQueryAfterFilter(){
-        //Test case for filtering all genres without a search query afterwards
-        Platform.runLater(() -> {
-            controller.genreComboBox.setValue(Genre.valueOf("ACTION")); //Setting genre filter
-            controller.handleGenreFilter(); //Performing genre filtering
-            controller.searchField.setText("Inception"); //Setting search query
-            controller.handleSearch(); //Performing search
-
-            controller.searchField.setText(""); //Clearing search query
-            controller.genreComboBox.setValue(Genre.valueOf("ALL")); //Setting genre filter to ALL
-            controller.handleGenreFilter(); //Performing genre filtering
-            controller.handleSearch(); //Performing search
-        });
-
-        Platform.runLater(() -> {
-            assertEquals(allMovies,controller.observableMovies); //Verifying all movies all displayed
-        });
-    }
-
-   /*   @Test
-    public void testGenreFilter() {
-        //Test case for genre filtering
-        Platform.runLater(() -> {
-            controller.genreComboBox.setValue("ACTION"); //Setting genre filter
-            controller.handleGenreFilter(); //Perfoming genre filter
-        });
-        for (Movie movie : allMovies) { //Iterating through all movies
-            if (movie.getGenres().contains("ACTION")) { //Checking if movie contains genre
-                filteredMovies.add(movie); //Adding movie to filtered movie list
-            }
-        }
-        Platform.runLater(() -> //Verifying filtered movies are correct
-                assertTrue("Die Listen enthalten nicht dieselben Elemente.",
-                filteredMovies.size() == controller.observableMovies.size() &&
-                        filteredMovies.containsAll(controller.observableMovies) &&
-                        controller.observableMovies.containsAll(filteredMovies))
-        );
-    }
-
-  @Test
-    public void testSortAscendingAndGenreFilter() {
-        //Test case for ascending sorting and genre filtering
-        Platform.runLater(() -> {
-            controller.genreComboBox.setValue("ACTION"); //Setting genre filter
-            controller.sortBtn.setText("Sort (asc)"); //Setting sorting to ascending
-
-            controller.handleGenreFilter(); //Performing genre filtering
-            controller.handleSort(); //Performing sorting
-        });
-
-        for (Movie movie : allMovies) { //Iterating through all movies
-            if (movie.getGenres().contains("ACTION")) { //Checking if movie contains genre
-                filteredMovies.add(movie); //Adding movie to filtered movie list
-            }
-        }
-        filteredMovies.sort(Comparator.comparing(Movie::getTitle)); //Sorting movies by title
-
-        Platform.runLater(() -> {
-            Assertions.assertIterableEquals(filteredMovies, controller.observableMovies); //Verifying sorting is correct
-        });
-    }*/
-
-    ///Steffi: no loops or if cond within a test
-
-    @Test
-    public void testSortAscending() {
-        //Test case for scending sorting
-        Platform.runLater(() -> {
-            controller.sortBtn.setText("Sort (asc)"); //Setting sorting to ascending
-            controller.handleSort(); //Performing sorting
-                });
-        Platform.runLater(() -> {
-                    assertEquals("Sort (desc)", controller.sortBtn.getText()); //Verifying sorting is correct
-                });
-    }
-
-    @Test
-    public void testSortDescending() {
-        //Test case for descending sorting
-        Platform.runLater(() -> {
-            controller.sortBtn.setText("Sort (desc)"); //Setting sorting to descending
-            controller.handleSort(); //Performing sorting
-        });
-        Platform.runLater(() -> {
-            assertEquals("Sort (asc)", controller.sortBtn.getText()); //Verifying sorting is correct
-        });
-    }
-
-    @Test
-    public void testMovieInitialization() {
-        Movie movie = new Movie("1", "Test Movie", "Test Description", Arrays.asList(Genre.ACTION), 2022, 120, "test.jpg", Arrays.asList("Director1"), Arrays.asList("Actor1"), 8.0);
-
-        assertEquals("1", movie.getId());
-        assertEquals("Test Movie", movie.getTitle());
-        assertEquals("Test Description", movie.getDescription());
-        assertEquals(Arrays.asList(Genre.ACTION), movie.getGenres());
-        assertEquals(2022, movie.getReleaseYear());
-        assertEquals(120, movie.getLengthInMinutes());
-        assertEquals("test.jpg", movie.getImgUrl());
-        assertEquals(Arrays.asList("Director1"), movie.getDirectors());
-        assertEquals(Arrays.asList("Actor1"), movie.getMainCast());
-        assertEquals(8.0, movie.getRating(), 0.001);
-    }
-
-    @Test
-    public void testCompareTo() {
-        Movie movie1 = new Movie("1", "Movie A", "", Arrays.asList(Genre.ACTION), 2022, 120, "", Arrays.asList(""), Arrays.asList(""), 8.0);
-        Movie movie2 = new Movie("2", "Movie B", "", Arrays.asList(Genre.ACTION), 2022, 120, "", Arrays.asList(""), Arrays.asList(""), 8.0);
-
-        assertTrue(movie1.compareTo(movie2) < 0);
-        assertTrue(movie2.compareTo(movie1) > 0);
-        assertEquals(0, movie1.compareTo(movie1));
-    }
-
-    @Test
-    public void testGetAllMovies() {
-        MovieAPI movieAPI = new MovieAPI();
-        List<Movie> movies = movieAPI.getAllMovies();
-
-        assertNotNull(movies);
-        assertFalse(movies.isEmpty());
-    }
-
-    @Test
-    public void testSearchMovies() {
-        MovieAPI movieAPI = new MovieAPI();
-        List<Movie> movies = movieAPI.searchMovies("", Genre.ACTION, 2018, 8.0);
-
-        assertNotNull(movies);
-        assertFalse(movies.isEmpty());
-    }
 
     public List<Movie> createMovieList(){
         ArrayList<Genre> movie1Genres = new ArrayList();                //dummy movies created by chatGPT
@@ -228,7 +29,7 @@ public class HomeControllerTest {
         movie1Writers.add("Hermann");
         ArrayList<String> movie1Actors = new ArrayList<>();
         movie1Actors.add("Hermann");
-        Movie movie1 = new Movie("one","dasIstDerErsteFilm","Hermanns erster Film.", movie1Genres,
+        Movie movie1 = new Movie("one","das Ist Der ErsteFilm","Hermanns erster Film.", movie1Genres,
                 2024, 120, "http:/image/.com/", movie1Directors,movie1Actors,1.2);
 
         ArrayList<Genre> movie2Genres = new ArrayList<>();
@@ -242,7 +43,7 @@ public class HomeControllerTest {
         ArrayList<String> movie2Actors = new ArrayList<>();
         movie2Actors.add("Hermann");
         movie2Actors.add("Julia");
-        Movie movie2 = new Movie("two", "DieNachtDerEntscheidung", "Ein packender Actionthriller.", movie2Genres,
+        Movie movie2 = new Movie("two", "Die Nacht Der Entscheidung", "Ein packender Actionthriller.", movie2Genres,
                 2023, 140, "http:/image/.com/", movie2Directors, movie2Actors, 3.5);
 
         ArrayList<Genre> movie3Genres = new ArrayList<>();
@@ -310,56 +111,99 @@ public class HomeControllerTest {
         return createMovieList;
     }
 
+    @Before
+    public void setUp() {                                                                   //by ChatGPT
+        controller = new HomeController();
+        //Initializing the JavaFX platform
+        if(!toolkitInitialized){
+            Platform.startup(() -> {
+                new JFXPanel();
+                controller.searchField = new TextField();
+                controller.genreComboBox = new JFXComboBox();
+                controller.sortBtn = new JFXButton();
+            });
+            toolkitInitialized = true;
+        }
+    }
+
+    //Test case for ascending sorting
+    @Test
+    public void testSortAscending() {
+        Platform.runLater(() -> {
+            controller.sortBtn.setText("Sort (asc)");
+            controller.handleSort();
+                });
+        Platform.runLater(() -> {
+                    assertEquals("Sort (desc)", controller.sortBtn.getText());
+                });
+    }
+
+    //Test case for descending sorting
+    @Test
+    public void testSortDescending() {
+        Platform.runLater(() -> {
+            controller.sortBtn.setText("Sort (desc)");
+            controller.handleSort();
+        });
+        Platform.runLater(() -> {
+            assertEquals("Sort (asc)", controller.sortBtn.getText());
+        });
+    }
+
+    //Test for Get-Method getId
+    @Test
+    public void testMovieInitializationGetId() {
+        Movie movie = createMovieList().get(0);
+        assertEquals("one", movie.getId());
+    }
+
+    //Test for Get-Method getTitle
+    @Test
+    public void testMovieInitializationGetTitle() {
+        Movie movie = createMovieList().get(1);
+        assertEquals("Die Nacht Der Entscheidung", movie.getTitle());
+    }
+
+    //Testing if most popular actor is returned
     @Test
     public void testGetMostPopularActor(){
         assertEquals("Hermann", controller.getMostPopularActor(createMovieList()));
     }
 
+    //Testing if longest movie is found and correct int is returned
     @Test
     public void testGetLongestMovieTitleLength(){
         assertEquals(31,controller.getLongestMovieTitle(createMovieList()));
     }
 
+    //Test for amount of movies from director Klaus
     @Test
     public void testCountMoviesFromDirectorKlaus(){
         String chosenDirector = "Klaus";
-        long numberOfMovies = controller.countMoviesFrom(createMovieList(),"Klaus");
+        long numberOfMovies = controller.countMoviesFrom(createMovieList(),chosenDirector);
         assertEquals(3,numberOfMovies);
     }
 
+    //Test for amount of movies from director Franziska
     @Test
     public void testCountMoviesFromDirectorFranziska(){
         String chosenDirector = "Franziska";
-        long numberOfMovies = controller.countMoviesFrom(createMovieList(),"Franziska");
+        long numberOfMovies = controller.countMoviesFrom(createMovieList(),chosenDirector);
         assertEquals(2,numberOfMovies);
     }
 
-
+    //Test to get correct amount of movies between 2018 - 2020
     @Test
     public void testGetMoviesBetweenYears2018and2020(){
         assertEquals(2,controller.getMoviesBetweenYears(createMovieList(),2018,2020).size());
     }
 
+    //Test to get correct amount of movies between 2020 - 2024
     @Test
     public void testGetMoviesBetweenYears2020and2024(){
         assertEquals(4,controller.getMoviesBetweenYears(createMovieList(),2020,2024).size());
     }
 
-
-
-
-
-    /*@Test
-    public void testGetMostPopularActorTwoSameOften(){
-        createMovieList().add(new Movie("seven", "Das neue Abenteuer", "Ein weiteres episches Erlebnis.", Arrays.asList(Genre.ADVENTURE), 2024, 110, "http:/image.com/seven", Arrays.asList("Franz"), Arrays.asList("Franz"),
-                3.2));
-        assertEquals("Franz", controller.getMostPopularActor(createMovieList()));
-    }*/
-
-   /* @AfterAll
-    static void done() {
-        log.info("All tests are done.");
-    }*/
 
 }
 

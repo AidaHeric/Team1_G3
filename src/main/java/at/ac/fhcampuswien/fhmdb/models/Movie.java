@@ -1,12 +1,8 @@
 package at.ac.fhcampuswien.fhmdb.models;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Arrays;
 
 
-public class Movie implements Comparable<Movie>{
+public class Movie {
     private String title;                   //Mithilfe von Swagger
     private String description;
     private List<Genre> genres;
@@ -33,26 +29,10 @@ public class Movie implements Comparable<Movie>{
     }
 
     public static List<Movie> initializeMovies(){
-        /*List<Movie> movies = new ArrayList<>();
-        MovieAPI movieAPI = new MovieAPI();
-
-        List<Movie> fetchedMovies = movieAPI.getAllMovies();
-            movies.addAll(fetchedMovies);
-        return movies;*/
-
-        //API integration
-        MovieAPI movieAPI = new MovieAPI();
+        MovieAPI movieAPI = new MovieAPI();                 //we now get movies from API
         List<Movie> movies = movieAPI.getAllMovies();
         return movies;
     }
-
-    @Override
-    public int compareTo(Movie movie) {
-        return this.title.compareTo(movie.getTitle());
-    }
-    /*public boolean containsString(String substring) { //Checks if the string of title and description contains the given substring
-        return String.format("%s %s", title, description).toLowerCase().contains(substring.toLowerCase());
-    }*/
 
     public String getTitle() {
         return title;

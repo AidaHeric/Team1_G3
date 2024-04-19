@@ -90,12 +90,10 @@ public class HomeController implements Initializable {
 
     }
 
-    //Search action
     @FXML
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
         Genre genre = genreComboBox.getValue();
-
         int year = releaseYearComboBox.getValue();
         double rating = this.ratingComboBox.getValue();
 
@@ -104,29 +102,8 @@ public class HomeController implements Initializable {
 
         observableMovies.clear();
         observableMovies.addAll(movielist);
-
     }
 
-    @FXML
-    public void handleGenreFilter() {
-        Genre selectedGenre = genreComboBox.getValue();
-
-        observableMovies.clear();
-        genreFilteredMovies.clear();
-        if (selectedGenre.equals(Genre.ALL)) {                                  //add all movies, if all movies selected
-            genreFilteredMovies.addAll(allMovies);
-        } else {
-            genreFilteredMovies = allMovies.stream()                        //add all movies with selected genre
-                    .filter(movie ->
-                            movie.getGenres().contains(selectedGenre))
-                    .distinct()
-                    .collect(Collectors.toList());
-        }
-
-       observableMovies.addAll(genreFilteredMovies);
-    }
-
-    // Sorting action
     @FXML
     public void handleSort() {
         String currentText = sortBtn.getText();                              //sort ascending/descending
@@ -160,6 +137,25 @@ public class HomeController implements Initializable {
         return movies.stream()
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
+    }
+
+    @FXML
+    public void handleGenreFilter() {
+        Genre selectedGenre = genreComboBox.getValue();
+
+        observableMovies.clear();
+        genreFilteredMovies.clear();
+        if (selectedGenre.equals(Genre.ALL)) {                                  //add all movies, if all movies selected
+            genreFilteredMovies.addAll(allMovies);
+        } else {
+            genreFilteredMovies = allMovies.stream()                        //add all movies with selected genre
+                    .filter(movie ->
+                            movie.getGenres().contains(selectedGenre))
+                    .distinct()
+                    .collect(Collectors.toList());
+        }
+
+        observableMovies.addAll(genreFilteredMovies);
     }
 
 

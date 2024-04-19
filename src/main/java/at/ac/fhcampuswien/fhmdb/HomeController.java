@@ -67,9 +67,9 @@ public class HomeController implements Initializable {
 
 
         genreComboBox.getItems().addAll(Genre.values());
-        genreComboBox.setPromptText("Filter by Genre");
+        genreComboBox.setPromptText("Genre");
         genreComboBox.setOnAction(event -> handleGenreFilter());
-        genreComboBox.setValue(Genre.ALL);
+        //genreComboBox.setValue(Genre.ALL);
 
         releaseYearComboBox.getItems().add(0);
         releaseYearComboBox.getItems().addAll(allMovies.stream()
@@ -77,7 +77,7 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        releaseYearComboBox.setValue(0);
+        //releaseYearComboBox.setValue(0);
 
         ratingComboBox.getItems().add(0.0);
         ratingComboBox.getItems().addAll((allMovies.stream()
@@ -85,7 +85,7 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        ratingComboBox.setValue(0.0);
+        //ratingComboBox.setValue(0.0);
 
 
         movieListView.setCellFactory(param -> new MovieCell());

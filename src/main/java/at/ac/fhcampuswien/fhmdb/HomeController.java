@@ -56,9 +56,6 @@ public class HomeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
 
-        //MovieAPI movieAPI = new MovieAPI();
-        //List<Movie> movies = movieAPI.getAllMovies();
-
         // GET movies from API
         allMovies = Movie.initializeMovies();
         observableMovies.addAll(allMovies);
@@ -77,7 +74,6 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        //releaseYearComboBox.setValue(0);
 
         ratingComboBox.getItems().add(0.0);
         ratingComboBox.getItems().addAll((allMovies.stream()
@@ -85,7 +81,6 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        //ratingComboBox.setValue(0.0);
 
 
         movieListView.setCellFactory(param -> new MovieCell());
@@ -104,19 +99,6 @@ public class HomeController implements Initializable {
         double rating = this.ratingComboBox.getValue();
 
         List<Movie> movielist = movieAPI.searchMovies(query,genre, year, rating);
-
-        /*
-        List<Movie> filteredMovies = genreFilteredMovies.stream()       //Filter already Genre-Filtered Movies
-                .filter(movie ->
-                        (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
-                                (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query))) &&
-                                (genre.equals(Genre.ALL) || movie.getGenres().contains(genre)) &&
-                                (year == 0 || movie.getReleaseYear() == year) &&
-                                (rating == 0 || movie.getRating() == rating)
-                )
-                .distinct()
-                .toList();
-        */
 
         observableMovies.clear();
         observableMovies.addAll(movielist);

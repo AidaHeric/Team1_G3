@@ -6,7 +6,6 @@ import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -23,6 +22,7 @@ import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 public class HomeController implements Initializable {
 
+    // API instance to fetch movies
     MovieAPI movieAPI = new MovieAPI();
     @FXML
     public JFXButton searchBtn;
@@ -45,6 +45,7 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton sortBtn;
 
+    // List to store all movies and genre-filtered movies
     public List<Movie> allMovies = Movie.initializeMovies();
 
     public List<Movie> genreFilteredMovies = new ArrayList<>();
@@ -52,7 +53,7 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
-
+    // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
 
@@ -98,6 +99,7 @@ public class HomeController implements Initializable {
         int year = releaseYearComboBox.getValue();
         double rating = this.ratingComboBox.getValue();
 
+        // Search movies using API and update observable list
         List<Movie> movielist = movieAPI.searchMovies(query,genre, year, rating);
 
         observableMovies.clear();

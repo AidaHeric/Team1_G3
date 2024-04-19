@@ -99,7 +99,7 @@ public class HomeControllerTest {
         });
     }
 
-    @Test
+   /*   @Test
     public void testGenreFilter() {
         //Test case for genre filtering
         Platform.runLater(() -> {
@@ -119,7 +119,7 @@ public class HomeControllerTest {
         );
     }
 
-    @Test
+  @Test
     public void testSortAscendingAndGenreFilter() {
         //Test case for ascending sorting and genre filtering
         Platform.runLater(() -> {
@@ -140,7 +140,9 @@ public class HomeControllerTest {
         Platform.runLater(() -> {
             Assertions.assertIterableEquals(filteredMovies, controller.observableMovies); //Verifying sorting is correct
         });
-    }
+    }*/
+
+    ///Steffi: no loops or if cond within a test
 
     @Test
     public void testSortAscending() {
@@ -166,4 +168,33 @@ public class HomeControllerTest {
         });
     }
 
+    @Test
+    public void testMovieInitialization() {
+        Movie movie = new Movie("1", "Test Movie", "Test Description", Arrays.asList(Genre.ACTION), 2022, 120, "test.jpg", Arrays.asList("Director1"), Arrays.asList("Actor1"), 8.0);
+
+        assertEquals("1", movie.getId());
+        assertEquals("Test Movie", movie.getTitle());
+        assertEquals("Test Description", movie.getDescription());
+        assertEquals(Arrays.asList(Genre.ACTION), movie.getGenres());
+        assertEquals(2022, movie.getReleaseYear());
+        assertEquals(120, movie.getLengthInMinutes());
+        assertEquals("test.jpg", movie.getImgUrl());
+        assertEquals(Arrays.asList("Director1"), movie.getDirectors());
+        assertEquals(Arrays.asList("Actor1"), movie.getMainCast());
+        assertEquals(8.0, movie.getRating(), 0.001);
+    }
+
+    @Test
+    public void testCompareTo() {
+        Movie movie1 = new Movie("1", "Movie A", "", Arrays.asList(Genre.ACTION), 2022, 120, "", Arrays.asList(""), Arrays.asList(""), 8.0);
+        Movie movie2 = new Movie("2", "Movie B", "", Arrays.asList(Genre.ACTION), 2022, 120, "", Arrays.asList(""), Arrays.asList(""), 8.0);
+
+        assertTrue(movie1.compareTo(movie2) < 0);
+        assertTrue(movie2.compareTo(movie1) > 0);
+        assertEquals(0, movie1.compareTo(movie1));
+    }
+
 }
+
+
+

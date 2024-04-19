@@ -34,18 +34,26 @@ public class MovieAPI {
         }
     }
 
-    public List<Movie> searchMovies(String query, String genre) {
+    public List<Movie> searchMovies(String query, Genre genre, int releaseYear, double rating) {
         try {
             HttpUrl.Builder URLBuilder = HttpUrl.parse(MoviesURL).newBuilder();
             if (query != null && !query.isEmpty()) {
                 URLBuilder.addQueryParameter("query", query);
             }
-            if (genre != null && !genre.isEmpty()) {
-                URLBuilder.addQueryParameter("genre", genre);
+            if (genre != null && genre != Genre.ALL) {
+                URLBuilder.addQueryParameter("genre", genre.toString());
+            }
+            if (releaseYear != 0) {
+                URLBuilder.addQueryParameter("releaseYear", String.valueOf(releaseYear));
+            }
+            if (rating != 0.0) {
+                URLBuilder.addQueryParameter("rating", String.valueOf(rating));
             }
             String URL = URLBuilder.build().toString();
+            System.out.println(URL);
             Request request = new Request.Builder()
                     .url(URL)
+                    .header("User-Agent", "http.agent")
                     .build();
             return executeRequest(request);
         } catch (IOException e) {

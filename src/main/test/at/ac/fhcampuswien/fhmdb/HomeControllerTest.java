@@ -314,12 +314,39 @@ public class HomeControllerTest {
         assertEquals("Hermann", controller.getMostPopularActor(createMovieList()));
     }
 
+    @Test
+    public void testGetLongestMovieTitleLength(){
+        assertEquals(31,controller.getLongestMovieTitle(createMovieList()));
+    }
+
+    @Test
+    public void testCountMoviesFromDirector(){
+        String chosenDirector = "Klaus";
+        long numberOfMovies = controller.countMoviesFrom(createMovieList(),"Klaus");
+        assertEquals(3,numberOfMovies);
+    }
+
+    @Test
+    public void testGetMoviesBetweenYears2018and2020(){
+        assertEquals(2,controller.getMoviesBetweenYears(createMovieList(),2018,2020).size());
+    }
+
+    @Test
+    public void testGetMoviesBetweenYears2020and2024(){
+        assertEquals(4,controller.getMoviesBetweenYears(createMovieList(),2020,2024).size());
+    }
+
+
+
+
+
     /*@Test
     public void testGetMostPopularActorTwoSameOften(){
         createMovieList().add(new Movie("seven", "Das neue Abenteuer", "Ein weiteres episches Erlebnis.", Arrays.asList(Genre.ADVENTURE), 2024, 110, "http:/image.com/seven", Arrays.asList("Franz"), Arrays.asList("Franz"),
                 3.2));
         assertEquals("Franz", controller.getMostPopularActor(createMovieList()));
     }*/
+
    /* @AfterAll
     static void done() {
         log.info("All tests are done.");

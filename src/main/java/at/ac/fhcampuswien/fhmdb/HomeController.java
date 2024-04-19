@@ -77,7 +77,7 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        releaseYearComboBox.setValue(0);
+        //releaseYearComboBox.setValue("YEAR");
 
         ratingComboBox.getItems().add(0.0);
         ratingComboBox.getItems().addAll((allMovies.stream()
@@ -85,7 +85,7 @@ public class HomeController implements Initializable {
                 .distinct()
                 .sorted()
                 .toList());
-        ratingComboBox.setValue(0.0);
+        //ratingComboBox.setValue(0.0);
 
 
         movieListView.setCellFactory(param -> new MovieCell());

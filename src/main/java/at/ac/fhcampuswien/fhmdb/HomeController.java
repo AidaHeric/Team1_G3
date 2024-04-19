@@ -37,10 +37,10 @@ public class HomeController implements Initializable {
     public JFXComboBox<Genre> genreComboBox;
 
     @FXML
-    public TextField releaseYear;
+    public JFXComboBox<Integer> releaseYearComboBox;
 
     @FXML
-    public TextField rating;
+    public JFXComboBox<Double> ratingComboBox;
 
     @FXML
     public JFXButton sortBtn;
@@ -59,6 +59,8 @@ public class HomeController implements Initializable {
         //MovieAPI movieAPI = new MovieAPI();
         //List<Movie> movies = movieAPI.getAllMovies();
 
+        // GET movies from API
+        allMovies = Movie.initializeMovies();
         observableMovies.addAll(allMovies);
 
         movieListView.setItems(observableMovies);
@@ -68,6 +70,23 @@ public class HomeController implements Initializable {
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.setOnAction(event -> handleGenreFilter());
         genreComboBox.setValue(Genre.ALL);
+
+        releaseYearComboBox.getItems().add(0);
+        releaseYearComboBox.getItems().addAll(allMovies.stream()
+                .map(Movie -> Movie.getReleaseYear())
+                .distinct()
+                .sorted()
+                .toList());
+        releaseYearComboBox.setValue(0);
+
+        ratingComboBox.getItems().add(0.0);
+        ratingComboBox.getItems().addAll((allMovies.stream()
+                .map(Movie -> Movie.getRating()))
+                .distinct()
+                .sorted()
+                .toList());
+        ratingComboBox.setValue(0.0);
+
 
         movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
@@ -81,9 +100,12 @@ public class HomeController implements Initializable {
         String query = searchField.getText().toLowerCase();
         Genre genre = genreComboBox.getValue();
 
-        int year = releaseYear.getText().isEmpty() ? 0 : Integer.parseInt(releaseYear.getText());
-        double rating = this.rating.getText().isEmpty() ? 0 : Double.parseDouble(this.rating.getText());
+        int year = releaseYearComboBox.getValue();
+        double rating = this.ratingComboBox.getValue();
 
+        List<Movie> movielist = movieAPI.searchMovies(query,genre, year, rating);
+
+        /*
         List<Movie> filteredMovies = genreFilteredMovies.stream()       //Filter already Genre-Filtered Movies
                 .filter(movie ->
                         (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
@@ -94,12 +116,13 @@ public class HomeController implements Initializable {
                 )
                 .distinct()
                 .toList();
+        */
 
         observableMovies.clear();
-        Platform.runLater(() -> observableMovies.addAll(filteredMovies));
+        observableMovies.addAll(movielist);
+
     }
 
-    // Genre filter action
     @FXML
     public void handleGenreFilter() {
         Genre selectedGenre = genreComboBox.getValue();
@@ -116,7 +139,7 @@ public class HomeController implements Initializable {
                     .collect(Collectors.toList());
         }
 
-        Platform.runLater(() -> observableMovies.addAll(genreFilteredMovies));
+       observableMovies.addAll(genreFilteredMovies);
     }
 
     // Sorting action
@@ -131,31 +154,29 @@ public class HomeController implements Initializable {
         sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
 
-    String getMostPopularActor(List<Movie> movies){
+    String getMostPopularActor(List<Movie> movies) {
         Map<Object, Long> maincastMap = movies.stream()
                 .flatMap(eachMovie -> eachMovie.getMainCast().stream())
                 .collect(Collectors.groupingBy(mainCast -> mainCast, Collectors.counting()));
 
         String mostPopular = "";
-        mostPopular = String.valueOf(maincastMap.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey));
+        mostPopular = String.valueOf(maincastMap.entrySet().stream().max(Map.Entry.comparingByValue()).map(Map.Entry::getKey).orElse(""));
         return mostPopular;
     }
 
-    int getLongestMovieTitle(List<Movie> movies){
-      return movies.stream().mapToInt(eachMovie -> eachMovie.getTitle().length()).max().orElse(0);
+    int getLongestMovieTitle(List<Movie> movies) {
+        return movies.stream().mapToInt(eachMovie -> eachMovie.getTitle().length()).max().orElse(0);
     }
 
-    long countMoviesFrom(List<Movie> movies, String director){
+    long countMoviesFrom(List<Movie> movies, String director) {
         return movies.stream().filter(eachMovie -> eachMovie.getDirectors().contains(director)).count();
     }
 
-    List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear){
+    List<Movie> getMoviesBetweenYears(List<Movie> movies, int startYear, int endYear) {
         return movies.stream()
                 .filter(movie -> movie.getReleaseYear() >= startYear && movie.getReleaseYear() <= endYear)
                 .collect(Collectors.toList());
     }
-
-
 
 
 }

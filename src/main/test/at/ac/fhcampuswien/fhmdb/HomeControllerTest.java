@@ -321,11 +321,19 @@ public class HomeControllerTest {
     }
 
     @Test
-    public void testCountMoviesFromDirector(){
+    public void testCountMoviesFromDirectorKlaus(){
         String chosenDirector = "Klaus";
         long numberOfMovies = controller.countMoviesFrom(createMovieList(),"Klaus");
         assertEquals(3,numberOfMovies);
     }
+
+    @Test
+    public void testCountMoviesFromDirectorFranziska(){
+        String chosenDirector = "Franziska";
+        long numberOfMovies = controller.countMoviesFrom(createMovieList(),"Franziska");
+        assertEquals(2,numberOfMovies);
+    }
+
 
     @Test
     public void testGetMoviesBetweenYears2018and2020(){

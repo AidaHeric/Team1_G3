@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -20,14 +21,9 @@ import java.io.IOException;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 
-import static at.ac.fhcampuswien.fhmdb.models.Movie.getAllGenres;
-
-// Controller class for managing the home view of the application
-
 public class HomeController implements Initializable {
 
-    public boolean useAPI = false;
-    public MovieAPI movieAPI = new MovieAPI();
+    MovieAPI movieAPI = new MovieAPI();
     @FXML
     public JFXButton searchBtn;
 
@@ -38,7 +34,7 @@ public class HomeController implements Initializable {
     public JFXListView<Movie> movieListView;
 
     @FXML
-    public JFXComboBox<String> genreComboBox;
+    public JFXComboBox<Genre> genreComboBox;
 
     @FXML
     public TextField releaseYear;
@@ -57,7 +53,6 @@ public class HomeController implements Initializable {
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
 
-    //Initialize the controller
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
 
@@ -68,10 +63,11 @@ public class HomeController implements Initializable {
 
         movieListView.setItems(observableMovies);
 
-        genreComboBox.setItems(FXCollections.observableArrayList(getAllGenres()));
+
+        genreComboBox.getItems().addAll(Genre.values());
         genreComboBox.setPromptText("Filter by Genre");
         genreComboBox.setOnAction(event -> handleGenreFilter());
-        genreComboBox.setValue("ALL");
+        genreComboBox.setValue(Genre.ALL);
 
         movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
@@ -83,69 +79,55 @@ public class HomeController implements Initializable {
     @FXML
     public void handleSearch() {
         String query = searchField.getText().toLowerCase();
-        String genre = genreComboBox.getValue();
+        Genre genre = genreComboBox.getValue();
 
         int year = releaseYear.getText().isEmpty() ? 0 : Integer.parseInt(releaseYear.getText());
         double rating = this.rating.getText().isEmpty() ? 0 : Double.parseDouble(this.rating.getText());
 
-        List<Movie> filteredMovies;
-        if (useAPI) {
-            filteredMovies = movieAPI.searchMovies(query, genre);
-        } else {
-            filteredMovies = genreFilteredMovies.stream()       //Filter already Genre-Filtered Movies
-                    .filter(movie ->
-                            (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
-                                    (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query))) &&
-                                    (genre.equals("ALL") || movie.getGenres().contains(genre)) &&
-                                    (year == 0 || movie.getReleaseYear() == year) &&
-                                    (rating == 0 || movie.getRating() == rating)
-                    )
-                    .distinct()
-                    .toList();
-        }
+        List<Movie> filteredMovies = genreFilteredMovies.stream()       //Filter already Genre-Filtered Movies
+                .filter(movie ->
+                        (query.isEmpty() || movie.getTitle().toLowerCase().contains(query) ||
+                                (movie.getDescription() != null && movie.getDescription().toLowerCase().contains(query))) &&
+                                (genre.equals(Genre.ALL) || movie.getGenres().contains(genre)) &&
+                                (year == 0 || movie.getReleaseYear() == year) &&
+                                (rating == 0 || movie.getRating() == rating)
+                )
+                .distinct()
+                .toList();
+
         observableMovies.clear();
-        observableMovies.addAll(filteredMovies);
+        Platform.runLater(() -> observableMovies.addAll(filteredMovies));
     }
 
     // Genre filter action
     @FXML
     public void handleGenreFilter() {
-        String selectedGenre = genreComboBox.getValue();
+        Genre selectedGenre = genreComboBox.getValue();
+
         observableMovies.clear();
         genreFilteredMovies.clear();
-        if (useAPI) {
-            genreFilteredMovies = movieAPI.searchMovies(null, selectedGenre);
+        if (selectedGenre.equals(Genre.ALL)) {                                  //add all movies, if all movies selected
+            genreFilteredMovies.addAll(allMovies);
         } else {
-            if (selectedGenre.equals("ALL")) {
-                genreFilteredMovies.addAll(allMovies);
-            } else {
-                genreFilteredMovies = allMovies.stream()
-                        .filter(movie -> movie.getGenres().contains(selectedGenre))
-                        .distinct()
-                        .collect(Collectors.toList());
-            }
+            genreFilteredMovies = allMovies.stream()                        //add all movies with selected genre
+                    .filter(movie ->
+                            movie.getGenres().contains(selectedGenre))
+                    .distinct()
+                    .collect(Collectors.toList());
         }
-        observableMovies.addAll(genreFilteredMovies);
+
+        Platform.runLater(() -> observableMovies.addAll(genreFilteredMovies));
     }
 
-    // TODO mit API???? neue Methode sortMovies?
+    // Sorting action
     @FXML
     public void handleSort() {
-        String currentText = sortBtn.getText(); //sort ascending/descending
-
-        if (useAPI) {
-            // Assuming your API has a sortMovies method
-            List<Movie> sortedMovies = movieAPI.sortMovies(currentText.equals("Sort (asc)") ? "asc" : "desc");
-            observableMovies.clear();
-            observableMovies.addAll(sortedMovies);
+        String currentText = sortBtn.getText();                              //sort ascending/descending
+        if (currentText.equals("Sort (asc)")) {
+            observableMovies.sort(Comparator.comparing(Movie::getTitle));
         } else {
-            if (currentText.equals("Sort (asc)")) {
-                observableMovies.sort(Comparator.comparing(Movie::getTitle));
-            } else {
-                observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
-            }
+            observableMovies.sort(Comparator.comparing(Movie::getTitle).reversed());
         }
-
         sortBtn.setText(currentText.equals("Sort (asc)") ? "Sort (desc)" : "Sort (asc)");
     }
 

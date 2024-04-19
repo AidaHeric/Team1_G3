@@ -37,15 +37,14 @@ public class MovieCell extends ListCell<Movie> {
             this.getStyleClass().add("movie-cell");
             title.setText(movie.getTitle());
             releaseYear.setText("Released: " + Integer.toString(movie.getReleaseYear()));
-            genre.setText(movie.getGenres().toString());
             detail.setText(
                     movie.getDescription() != null
                             ? movie.getDescription()
                             : "No description available"
             );
-            //TODO: make Genres a String
-            //genre.setText(movie.getGenres().toString());
-            rating.setText("Rating: " + movie.getRating());
+
+            genre.setText(movie.getGenres().toString().replaceAll("[\\[\\]]", ""));
+            rating.setText(" - Rating: " + movie.getRating());
 
 
             //colour scheme

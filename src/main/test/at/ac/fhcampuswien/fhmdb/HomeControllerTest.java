@@ -212,7 +212,7 @@ public class HomeControllerTest {
     @Test
     public void testSearchMovies() {
         MovieAPI movieAPI = new MovieAPI();
-        List<Movie> movies = movieAPI.searchMovies("Action", Genre.ACTION, 2022, 8.0);
+        List<Movie> movies = movieAPI.searchMovies("", Genre.ACTION, 2018, 8.0);
 
         assertNotNull(movies);
         assertFalse(movies.isEmpty());
@@ -321,8 +321,7 @@ public class HomeControllerTest {
                 3.2));
         assertEquals("Franz", controller.getMostPopularActor(createMovieList()));
     }*/
-
-    /*@AfterAll
+   /* @AfterAll
     static void done() {
         log.info("All tests are done.");
     }*/

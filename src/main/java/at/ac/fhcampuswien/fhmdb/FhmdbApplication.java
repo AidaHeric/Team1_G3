@@ -27,7 +27,7 @@ public class FhmdbApplication extends Application {
         // Display the stage
         stage.show();
 
-        DatabaseManager.getDatabase().testDB();
+        //DatabaseManager.getDatabase().testDB();
     }
 
     public static void main(String[] args) {

@@ -4,38 +4,43 @@ import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
+import java.util.*;
 
 import java.sql.SQLException;
 
 
 public class WatchlistRepository {
-    private static Dao<Watchlist, Integer> watchlistDao;
-    private Dao<Movie, Integer> movieDao;
+    private Dao<WatchlistMovieEntity, Integer> watchlistDao;
 
     public WatchlistRepository(ConnectionSource connectionSource) {
         try {
-            watchlistDao = DaoManager.createDao(connectionSource, Watchlist.class);
-            movieDao = DaoManager.createDao(connectionSource, Movie.class);
+            watchlistDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void addMovieToWatchlist(Watchlist watchlist, Movie movie) {
+    public List<WatchlistMovieEntity> getAllWatchlistMovies() throws DatabaseException {
         try {
-            watchlist.getMovies().add(movie);
-            watchlistDao.update(watchlist);
+            return watchlistDao.queryForAll();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Error while getting all watchlist movies.", e);
         }
     }
 
-    public static void removeMovieFromWatchlist(Watchlist watchlist, Movie movie) {
+    public void addWatchlistMovie(WatchlistMovieEntity watchlistMovie) throws DatabaseException {
         try {
-            watchlist.getMovies().remove(movie);
-            watchlistDao.update(watchlist);
+            watchlistDao.create(watchlistMovie);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Error while adding watchlist movie.", e);
+        }
+    }
+
+    public void deleteWatchlistMovie(WatchlistMovieEntity watchlistMovie) throws DatabaseException {
+        try {
+            watchlistDao.delete(watchlistMovie);
+        } catch (SQLException e) {
+            throw new DatabaseException("Error while deleting watchlist movie.", e);
         }
     }
 

@@ -1,5 +1,18 @@
 package at.ac.fhcampuswien.fhmdb.models;
-import java.util.*;
+
 
 public class WatchlistMovieEntity {
+    private int apiId;
+
+    public WatchlistMovieEntity () {
+        this.apiId = apiId;
+    }
+
+    public int getApiId() {
+        return apiId;
+    }
+
+    /*public void setApiID(int apiId) {
+        this.apiId =aApiId;
+    }*/
 }

@@ -7,6 +7,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @DatabaseTable(tableName = "movie")
 public class MovieEntity {
@@ -30,8 +31,10 @@ public class MovieEntity {
     double rating;
 
     //TODO: Implement these methods
-    String genresToString(List<Genre> genres) {
-        return null;
+    /*public static String genresToString(List<Genre> genres) {
+        return genres.stream()
+                .map(Genre::name)
+                .collect(Collectors.joining(","));
     }
 
     List<MovieEntity> fromMovies(List<Movie> movies) {
@@ -43,7 +46,7 @@ public class MovieEntity {
 
         return null;
     }
-
+*/
 
     public MovieEntity() {
     }

@@ -1,6 +1,9 @@
 package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
+import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
+import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,6 +29,14 @@ public class FhmdbApplication extends Application {
         stage.setScene(scene);
         // Display the stage
         stage.show();
+
+        MovieRepository movieRepository = new MovieRepository();
+        MovieAPI movieAPI = new MovieAPI();
+        if(movieAPI.getAllMovies()!=null){
+            movieRepository.addAllMovies(movieAPI.getAllMovies());
+        }
+
+
 
         //DatabaseManager.getDatabase().testDB();
     }

@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -105,13 +106,18 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
 
-        watchlist.setOnAction(event -> handleMenu());
-        home.setOnAction(event -> handleMenu());
+        MenuItem homeItem = new MenuItem("Home");
+        homeItem.setOnAction(event -> handleHome());
+        home.getItems().add(homeItem);
+
+        MenuItem watchlistItem = new MenuItem("Watchlist");
+        watchlistItem.setOnAction(event -> handleWatchlist());
+        watchlist.getItems().add(watchlistItem);
+
 
     }
 
-    @FXML
-    public void handleMenu() {
+    private void handleWatchlist() {
         try {
             VBox root = FXMLLoader.load(getClass().getResource("watchlist-view.fxml"));
             movieListView.getScene().setRoot(root);
@@ -119,6 +125,26 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private void handleHome() {
+        try {
+            VBox root = FXMLLoader.load(getClass().getResource("home-view.fxml"));
+            movieListView.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleMenu() {
+        try {
+            VBox root = FXMLLoader.load(getClass().getResource("watchlist.fxml"));
+            movieListView.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     @FXML

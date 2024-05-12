@@ -9,6 +9,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Button;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+
+import java.io.IOException;
+
 
 // Custom implementation for displaying Movie objects
 public class MovieCell extends ListCell<Movie> {
@@ -24,6 +31,8 @@ public class MovieCell extends ListCell<Movie> {
     private final HBox description = new HBox(detail);
     private final HBox genresAndRating = new HBox(genre, rating);
     private final VBox layout = new VBox(header,year, description, genresAndRating);
+    VBox navigationPanel = new VBox();
+    Button navigateButton = new Button("Watchlist");
 
 
     @Override
@@ -64,9 +73,30 @@ public class MovieCell extends ListCell<Movie> {
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
+            navigationPanel.setMinSize(100, 100); // Set minimum size
+            navigationPanel.setPadding(new Insets(10)); // Add padding
+            navigationPanel.setPrefWidth(200); // Set preferred width
+            navigationPanel.setSpacing(10); // Set spacing between elements
+
+            if(navigateButton.getParent() == null){
+                navigationPanel.getChildren().add(navigateButton);
+                layout.getChildren().add(navigationPanel);
+            }
+            navigateButton.setOnAction(event -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Watchlist.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             //Set the graphic of the cell to the layout VBox
             setGraphic(layout);
         }
+
     }
 
 }

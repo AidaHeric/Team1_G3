@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
-import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.Genre;
+import at.ac.fhcampuswien.fhmdb.models.*;
+import at.ac.fhcampuswien.fhmdb.ui.ClickEventHandler;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -16,8 +16,6 @@ import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
-
-import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 
 
 public class HomeController implements Initializable {
@@ -53,6 +51,9 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
+    private WatchlistRepository watchlistRepository;
+    private Watchlist watchlist;
+
     // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
@@ -87,6 +88,36 @@ public class HomeController implements Initializable {
         movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
+
+        movieListView.setCellFactory(movieListView -> {
+            MovieCell movieCell = new MovieCell();
+
+            movieCell.navigateButton.setOnAction(event -> {
+                Movie movie = movieCell.getItem();
+                ClickEventHandler<Movie> addToWatchlistHandler = item -> {
+                    try {
+                        watchlistRepository.addMovieToWatchlist(watchlist, item);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                };
+                addToWatchlistHandler.onClick(movie);
+            });
+
+            movieCell.removeButton.setOnAction(event -> {
+                Movie movie = movieCell.getItem();
+                ClickEventHandler<Movie> removeFromWatchlistHandler = item -> {
+                    try {
+                        watchlistRepository.addMovieToWatchlist(watchlist, item);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                };
+                removeFromWatchlistHandler.onClick(movie);
+            });
+            return movieCell;
+        });
+
 
     }
 

@@ -31,8 +31,9 @@ public class MovieCell extends ListCell<Movie> {
     private final HBox description = new HBox(detail);
     private final HBox genresAndRating = new HBox(genre, rating);
     private final VBox layout = new VBox(header,year, description, genresAndRating);
+    public Button removeButton = new Button("Remove");
     VBox navigationPanel = new VBox();
-    Button navigateButton = new Button("Watchlist");
+    public Button navigateButton = new Button("Watchlist");
 
 
     @Override
@@ -82,9 +83,27 @@ public class MovieCell extends ListCell<Movie> {
                 navigationPanel.getChildren().add(navigateButton);
                 layout.getChildren().add(navigationPanel);
             }
+
+            if(removeButton.getParent() == null){
+                navigationPanel.getChildren().add(removeButton);
+                layout.getChildren().add(navigationPanel);
+            }
+
             navigateButton.setOnAction(event -> {
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("Watchlist.fxml"));
+                    Scene scene = new Scene(loader.load());
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            });
+            removeButton.setOnAction(event -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Remove.fxml"));
                     Scene scene = new Scene(loader.load());
                     Stage stage = new Stage();
                     stage.setScene(scene);

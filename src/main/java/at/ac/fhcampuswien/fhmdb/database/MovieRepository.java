@@ -1,11 +1,11 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
-import javafx.scene.chart.PieChart;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,49 +16,59 @@ import java.util.stream.Collectors;
 public class MovieRepository {
     Dao<MovieEntity,Long> dao;
 
-    public MovieRepository(){
+    public MovieRepository() throws DatabaseException {
         this.dao = DatabaseManager.getDatabase().dao;
     }
 
-    List<MovieEntity> getAllMovies() throws SQLException {
-        return dao.queryForAll();
-    }
-
-    int removeAll(){
+    public List<MovieEntity> getAllMovies() throws DatabaseException {
         try {
-            DeleteBuilder<MovieEntity, Long> deleteBuilder = dao.deleteBuilder();
-            return dao.delete(deleteBuilder.prepare());
-        } catch (SQLException e) {
-            System.err.println("Error removing all movies: " + e.getMessage());
-            return 0;
-        }
-    }
-
-    MovieEntity getMovie(Long movieId){
-        try {
-            return dao.queryForId(movieId);
-        } catch (SQLException e) {
-            System.err.println("Error retrieving movie with ID " + movieId + ": " + e.getMessage());
+            return dao.queryForAll();
+        } catch(SQLException e){
+            System.out.println("Error getting all movies:" + e.getMessage());
             return null;
         }
     }
 
-    public int addAllMovies(List<Movie> movies) throws SQLException {
-        List<MovieEntity> movieEntities = new ArrayList<>();
-        for(Movie movie: movies){
-            movieEntities.add(movieToMovieEntity(movie));
+    public int removeAll() throws DatabaseException{                                                             ////TODO: testen
+        try {
+            DeleteBuilder<MovieEntity, Long> deleteBuilder = dao.deleteBuilder();
+            return dao.delete(deleteBuilder.prepare());
+        } catch (SQLException e) {
+            System.out.println("Error removing all movies: " + e.getMessage());
+            return 0;
         }
-        dao.create(movieEntities);
-        return movieEntities.size();
     }
 
-    public static String genresToString(List<Genre> genres) {
+    public MovieEntity getMovie(Long movieId) throws DatabaseException {               ////TODO: testen
+        try{
+            return dao.queryForId(movieId);
+        } catch (SQLException e) {
+            System.out.println("Error getting movie with ID " + movieId + ": " + e.getMessage());
+            return null;
+        }
+    }
+
+    public int addAllMovies(List<Movie> movies) throws DatabaseException {          //TODO: testen
+        List<MovieEntity> movieEntities = new ArrayList<>();
+        try {
+            for (Movie movie : movies) {
+                movieEntities.add(movieToMovieEntity(movie));
+            }
+            dao.create(movieEntities);
+            return movieEntities.size();
+        } catch (SQLException e) {
+            System.out.println("Error, couldn't add the movies: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    public static String genresToString(List<Genre> genres) {               //TODO testen
         return genres.stream()
                 .map(Genre::name)
                 .collect(Collectors.joining(","));
     }
 
-    private MovieEntity movieToMovieEntity(Movie movie){
+    private MovieEntity movieToMovieEntity(Movie movie){                //TODO testen
         String genresString = genresToString(movie.getGenres());
         return new MovieEntity(movie.getId(),movie.getTitle(),movie.getDescription(),genresString,movie.getReleaseYear(),movie.getImgUrl(),movie.getLengthInMinutes(),movie.getRating());
     }

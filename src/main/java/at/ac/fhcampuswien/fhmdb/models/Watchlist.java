@@ -1,4 +1,4 @@
-package at.ac.fhcampuswien.fhmdb.models;
+/*package at.ac.fhcampuswien.fhmdb.models;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,5 +29,5 @@ public class Watchlist {
         return movies;
     }
 
-}
+}*/
 

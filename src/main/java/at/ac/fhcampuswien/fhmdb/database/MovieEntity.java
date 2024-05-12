@@ -30,7 +30,7 @@ public class MovieEntity {
     @DatabaseField
     double rating;
 
-    //TODO: Implement these methods
+    //TODO: Implement these methods?
     /*public static String genresToString(List<Genre> genres) {
         return genres.stream()
                 .map(Genre::name)

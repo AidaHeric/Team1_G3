@@ -1,7 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.Watchlist;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
@@ -77,20 +77,21 @@ public class MovieCell extends ListCell<Movie> {
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
 
-
-            if(removeButton.getParent() == null){
+            //Aida hat auskommentiert
+            //TODO
+            /*if(removeButton.getParent() == null){
                 navigationPanel.getChildren().add(removeButton);
                 layout.getChildren().add(navigationPanel);
             }
             removeButton.setOnAction(event -> {
                 if (movie != null) {
                     try {
-                        WatchlistRepository.removeMovieFromWatchlist(new Watchlist(), movie);
+                        WatchlistRepository.deleteWatchlistMovie(WatchlistMovieEntity,);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-            });
+            });*/
             //Set the graphic of the cell to the layout VBox
             setGraphic(layout);
         }

@@ -13,6 +13,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -30,18 +32,12 @@ public class HomeController implements Initializable {
     // API instance to fetch movies
     MovieAPI movieAPI = new MovieAPI();
     @FXML
-    private JFXButton homeBtn;
+    public MenuBar menuBar;
+    @FXML
+    public Menu home;
 
     @FXML
-    private JFXButton watchlistBtn;
-    @FXML
-    private JFXHamburger hamburgerMenu;
-
-    @FXML
-    private JFXDrawer drawer;
-
-    @FXML
-    private VBox sidePane;
+    public Menu watchlist;
 
     @FXML
     public JFXButton searchBtn;
@@ -108,41 +104,22 @@ public class HomeController implements Initializable {
         movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
-        /*hamburgerMenu = new JFXHamburger();
-        drawer = new JFXDrawer();
-        initializeDrawer();*/
-        homeBtn.setOnAction(event -> handleHomeBtnClick());
-        watchlistBtn.setOnAction(event -> handleWatchlistBtnClick());
 
-        URL url = FhmdbApplication.class.getResource("home-view.fxml");
-        System.out.println(url);
-        FXMLLoader fxmlLoader = new FXMLLoader(url);
-        getHamburgerMenu().addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburgerMenu);
-            transition.setRate(transition.getRate() * -1);
-            transition.play();
-
-            if (drawer.isHover()) {
-                drawer.open();
-            } else {
-                drawer.close();
-            }
-        });
+        watchlist.setOnAction(event -> handleMenu());
+        home.setOnAction(event -> handleMenu());
 
     }
 
-    private void handleWatchlistBtnClick() {
-
-    }
-
-    private void handleHomeBtnClick() {
+    @FXML
+    public void handleMenu() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-            drawer.setSidePane(fxmlLoader.load());
+            VBox root = FXMLLoader.load(getClass().getResource("watchlist-view.fxml"));
+            movieListView.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     public void handleSearch() {
@@ -212,31 +189,5 @@ public class HomeController implements Initializable {
         observableMovies.addAll(genreFilteredMovies);
     }
 
-    public JFXHamburger getHamburgerMenu() {
-        return hamburgerMenu;
-    }
-    /*   private void initializeDrawer() {
-        try {
-            HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburgerMenu);
-            transition.setRate(-1);
-
-            hamburgerMenu.setOnMouseClicked(event -> {
-                transition.setRate(transition.getRate() * -1);
-                transition.play();
-
-                if (drawer.isClosed()) {
-                    drawer.open();
-                } else {
-                    drawer.close();
-                }
-            });
-
-            VBox box = FXMLLoader.load(getClass().getResource("home-view.fxml"));
-            sidePane.getChildren().add(box);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    */
 
 }

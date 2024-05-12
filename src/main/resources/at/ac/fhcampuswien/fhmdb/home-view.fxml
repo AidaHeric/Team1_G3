@@ -33,8 +33,8 @@
          <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
          <MenuBar fx:id="menuBox">
             <menus>
-               <Menu mnemonicParsing="false" text="Home"/>
-               <Menu mnemonicParsing="false" text="Watchlist"/>
+               <Menu fx:id="home" mnemonicParsing="false" text="Home"/>
+               <Menu fx:id="watchlist" mnemonicParsing="false" text="Watchlist"/>
             </menus>
          </MenuBar>
         </children>

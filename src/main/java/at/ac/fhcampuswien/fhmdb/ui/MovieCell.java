@@ -76,6 +76,8 @@ public class MovieCell extends ListCell<Movie> {
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
+
+
             if(removeButton.getParent() == null){
                 navigationPanel.getChildren().add(removeButton);
                 layout.getChildren().add(navigationPanel);

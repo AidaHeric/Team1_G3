@@ -122,36 +122,6 @@ public class HomeController implements Initializable {
             transition.setRate(transition.getRate() * -1);
             transition.play();
 
-        movieListView.setCellFactory(movieListView -> {
-            MovieCell movieCell = new MovieCell();
-
-            movieCell.navigateButton.setOnAction(event -> {
-                Movie movie = movieCell.getItem();
-                ClickEventHandler<Movie> addToWatchlistHandler = item -> {
-                    try {
-                        watchlistRepository.addMovieToWatchlist(watchlist, item);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                };
-                addToWatchlistHandler.onClick(movie);
-            });
-
-            movieCell.removeButton.setOnAction(event -> {
-                Movie movie = movieCell.getItem();
-                ClickEventHandler<Movie> removeFromWatchlistHandler = item -> {
-                    try {
-                        watchlistRepository.addMovieToWatchlist(watchlist, item);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                };
-                removeFromWatchlistHandler.onClick(movie);
-            });
-            return movieCell;
-        });
-
-
             if (drawer.isHover()) {
                 drawer.open();
             } else {

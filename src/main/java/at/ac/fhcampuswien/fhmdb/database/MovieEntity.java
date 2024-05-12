@@ -38,7 +38,7 @@ public class MovieEntity {
         return null;
     }
 
-    List<Movie> toMovies(List<MovieEntities> movieEntities) {
+    List<Movie> toMovies(List<MovieEntity> movieEntities) {
 
         return null;
     }

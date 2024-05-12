@@ -1,9 +1,10 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.WatchlistMovieEntity;
-import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Background;
@@ -12,11 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-
-import java.io.IOException;
 
 
 // Custom implementation for displaying Movie objects
@@ -74,7 +70,7 @@ public class MovieCell extends ListCell<Movie> {
             detail.setWrapText(true);
             layout.setPadding(new Insets(10));
             layout.spacingProperty().set(10);
-            layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
+            layout.alignmentProperty().set(Pos.CENTER_LEFT);
 
 
             //Aida hat auskommentiert
@@ -96,6 +92,19 @@ public class MovieCell extends ListCell<Movie> {
             setGraphic(layout);
         }
 
+    }
+    public MovieCell() {
+        super();
+        Node watchlistBtn = new Button("Add to Watchlist");
+        watchlistBtn.setOnMouseClicked(mouseEvent -> {
+            ClickEventHandler<Movie> addToWatchlistClicked = null;
+            try {
+                addToWatchlistClicked.onClick(getItem());
+            } catch (DatabaseException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        // ... rest of code
     }
 
 }

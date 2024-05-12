@@ -1,8 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
-import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.models.Genre;
-import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.models.*;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -17,13 +16,13 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
+import at.ac.fhcampuswien.fhmdb.ui.ClickEventHandler;
 
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.io.IOException;
 
-import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
@@ -69,7 +68,7 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
-    private WatchlistRepository watchlistRepository;
+    private WatchlistRepository watchlistRepository = new WatchlistRepository();
 
     // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
@@ -106,11 +105,11 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
 
-        MenuItem homeItem = new MenuItem("Home");
+        MenuItem homeItem = new MenuItem("Go to Home");
         homeItem.setOnAction(event -> handleHome());
         home.getItems().add(homeItem);
 
-        MenuItem watchlistItem = new MenuItem("Watchlist");
+        MenuItem watchlistItem = new MenuItem("Go to Watchlist");
         watchlistItem.setOnAction(event -> handleWatchlist());
         watchlist.getItems().add(watchlistItem);
 
@@ -138,7 +137,7 @@ public class HomeController implements Initializable {
     @FXML
     public void handleMenu() {
         try {
-            VBox root = FXMLLoader.load(getClass().getResource("watchlist.fxml"));
+            VBox root = FXMLLoader.load(getClass().getResource("watchlist-view.fxml"));
             movieListView.getScene().setRoot(root);
         } catch (IOException e) {
             e.printStackTrace();
@@ -214,6 +213,14 @@ public class HomeController implements Initializable {
 
         observableMovies.addAll(genreFilteredMovies);
     }
+    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) ->
+    {
+        try {
+            watchlistRepository.addWatchlistMovie((WatchlistMovieEntity) clickedItem);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+    };
 
 
 }

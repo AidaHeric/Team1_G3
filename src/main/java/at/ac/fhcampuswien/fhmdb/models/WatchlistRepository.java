@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 
 public class WatchlistRepository {
-    private Dao<Watchlist, Integer> watchlistDao;
+    private static Dao<Watchlist, Integer> watchlistDao;
     private Dao<Movie, Integer> movieDao;
 
     public WatchlistRepository(ConnectionSource connectionSource) {
@@ -29,7 +29,7 @@ public class WatchlistRepository {
         }
     }
 
-    public void removeMovieFromWatchlist(Watchlist watchlist, Movie movie) {
+    public static void removeMovieFromWatchlist(Watchlist watchlist, Movie movie) {
         try {
             watchlist.getMovies().remove(movie);
             watchlistDao.update(watchlist);

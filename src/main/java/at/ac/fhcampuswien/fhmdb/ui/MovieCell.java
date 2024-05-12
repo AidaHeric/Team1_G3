@@ -1,6 +1,8 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.Watchlist;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -102,19 +104,17 @@ public class MovieCell extends ListCell<Movie> {
 
             });
             removeButton.setOnAction(event -> {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Remove.fxml"));
-                    Scene scene = new Scene(loader.load());
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (movie != null) {
+                    try {
+                        WatchlistRepository.removeMovieFromWatchlist(new Watchlist(), movie);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
-            //Set the graphic of the cell to the layout VBox
-            setGraphic(layout);
-        }
+                //Set the graphic of the cell to the layout VBox
+                setGraphic(layout);
+            }
 
     }
 

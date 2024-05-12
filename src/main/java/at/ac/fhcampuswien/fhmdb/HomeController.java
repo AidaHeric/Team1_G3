@@ -2,6 +2,7 @@ package at.ac.fhcampuswien.fhmdb;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
@@ -71,6 +72,8 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
+    private WatchlistRepository watchlistRepository;
+
     // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
@@ -118,6 +121,36 @@ public class HomeController implements Initializable {
             HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburgerMenu);
             transition.setRate(transition.getRate() * -1);
             transition.play();
+
+        movieListView.setCellFactory(movieListView -> {
+            MovieCell movieCell = new MovieCell();
+
+            movieCell.navigateButton.setOnAction(event -> {
+                Movie movie = movieCell.getItem();
+                ClickEventHandler<Movie> addToWatchlistHandler = item -> {
+                    try {
+                        watchlistRepository.addMovieToWatchlist(watchlist, item);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                };
+                addToWatchlistHandler.onClick(movie);
+            });
+
+            movieCell.removeButton.setOnAction(event -> {
+                Movie movie = movieCell.getItem();
+                ClickEventHandler<Movie> removeFromWatchlistHandler = item -> {
+                    try {
+                        watchlistRepository.addMovieToWatchlist(watchlist, item);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                };
+                removeFromWatchlistHandler.onClick(movie);
+            });
+            return movieCell;
+        });
+
 
             if (drawer.isHover()) {
                 drawer.open();

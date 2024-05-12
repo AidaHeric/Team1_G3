@@ -1,6 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -10,7 +11,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Button;
-
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
 
@@ -29,6 +32,7 @@ public class MovieCell extends ListCell<Movie> {
     private final HBox description = new HBox(detail);
     private final HBox genresAndRating = new HBox(genre, rating);
     private final VBox layout = new VBox(header,year, description, genresAndRating);
+    public Button removeButton = new Button("Remove");
     VBox navigationPanel = new VBox();
     Button navigateButton = new Button("Watchlist");
 
@@ -71,6 +75,19 @@ public class MovieCell extends ListCell<Movie> {
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(javafx.geometry.Pos.CENTER_LEFT);
 
+            if(removeButton.getParent() == null){
+                navigationPanel.getChildren().add(removeButton);
+                layout.getChildren().add(navigationPanel);
+            }
+            removeButton.setOnAction(event -> {
+                if (movie != null) {
+                    try {
+                        WatchlistRepository.removeMovieFromWatchlist(new Watchlist(), movie);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
             //Set the graphic of the cell to the layout VBox
             setGraphic(layout);
         }

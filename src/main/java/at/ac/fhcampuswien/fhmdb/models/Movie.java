@@ -1,18 +1,12 @@
 package at.ac.fhcampuswien.fhmdb.models;
 import java.util.List;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-@DatabaseTable(tableName = "movies")
+
 
 public class Movie {
-    @DatabaseField
-
     private String title;                   //Mithilfe von Swagger
     private String description;
     private List<Genre> genres;
-    @DatabaseField(id = true)
-
     private String id;
     private int releaseYear;
     private String imgUrl;

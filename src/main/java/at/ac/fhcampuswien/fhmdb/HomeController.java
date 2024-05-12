@@ -3,12 +3,14 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
@@ -18,12 +20,28 @@ import java.util.stream.Collectors;
 import java.io.IOException;
 
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 
 
 public class HomeController implements Initializable {
 
     // API instance to fetch movies
     MovieAPI movieAPI = new MovieAPI();
+    @FXML
+    private JFXButton homeBtn;
+
+    @FXML
+    private JFXButton watchlistBtn;
+    @FXML
+    private JFXHamburger hamburgerMenu;
+
+    @FXML
+    private JFXDrawer drawer;
+
+    @FXML
+    private VBox sidePane;
+
     @FXML
     public JFXButton searchBtn;
 
@@ -87,7 +105,40 @@ public class HomeController implements Initializable {
         movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
+        /*hamburgerMenu = new JFXHamburger();
+        drawer = new JFXDrawer();
+        initializeDrawer();*/
+        homeBtn.setOnAction(event -> handleHomeBtnClick());
+        watchlistBtn.setOnAction(event -> handleWatchlistBtnClick());
 
+        URL url = FhmdbApplication.class.getResource("home-view.fxml");
+        System.out.println(url);
+        FXMLLoader fxmlLoader = new FXMLLoader(url);
+        getHamburgerMenu().addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburgerMenu);
+            transition.setRate(transition.getRate() * -1);
+            transition.play();
+
+            if (drawer.isHover()) {
+                drawer.open();
+            } else {
+                drawer.close();
+            }
+        });
+
+    }
+
+    private void handleWatchlistBtnClick() {
+
+    }
+
+    private void handleHomeBtnClick() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+            drawer.setSidePane(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -158,5 +209,31 @@ public class HomeController implements Initializable {
         observableMovies.addAll(genreFilteredMovies);
     }
 
+    public JFXHamburger getHamburgerMenu() {
+        return hamburgerMenu;
+    }
+    /*   private void initializeDrawer() {
+        try {
+            HamburgerBasicCloseTransition transition = new HamburgerBasicCloseTransition(hamburgerMenu);
+            transition.setRate(-1);
+
+            hamburgerMenu.setOnMouseClicked(event -> {
+                transition.setRate(transition.getRate() * -1);
+                transition.play();
+
+                if (drawer.isClosed()) {
+                    drawer.open();
+                } else {
+                    drawer.close();
+                }
+            });
+
+            VBox box = FXMLLoader.load(getClass().getResource("home-view.fxml"));
+            sidePane.getChildren().add(box);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    */
 
 }

@@ -10,6 +10,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Menu?>
+<?import com.jfoenix.controls.JFXHamburger?>
+<?import com.jfoenix.controls.JFXDrawer?>
+
 <VBox prefHeight="331.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="at.ac.fhcampuswien.fhmdb.HomeController">
    <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="347.0" spacing="20.0" style="-fx-background-color: black;">
       <padding>
@@ -25,10 +31,32 @@
             </padding>
          </Label>
          <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
-      </children>
+         <MenuBar fx:id="menuBox">
+            <menus>
+               <Menu mnemonicParsing="false" text="Home"/>
+               <Menu mnemonicParsing="false" text="Watchlist"/>
+            </menus>
+         </MenuBar>
+        </children>
    </HBox>
+   <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" prefHeight="331.0" prefWidth="570.0" VBox.vgrow="ALWAYS">
+      <sidePane>
+         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;">
+            <children>
+               <JFXHamburger fx:id="hamburgerMenu" styleClass="hamburger" />
+               <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;">
+                  <children>
+                     <JFXButton fx:id="homeBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Home" />
+                        <JFXButton fx:id="watchlistBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Watchlist" />
+                    </children>
+                </VBox>
+            </children>
+        </VBox>
+    </sidePane>
+</JFXDrawer>
    <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">
       <children>
+
          <JFXButton fx:id="sortBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Sort (asc)" />
          <TextField fx:id="searchField" prefHeight="25.0" prefWidth="170.0" promptText="Search FHMDb" />
          <JFXComboBox fx:id="genreComboBox" focusColor="#f5c518" styleClass="filter-combo-box" stylesheets="@styles.css" promptText="Genre"/>

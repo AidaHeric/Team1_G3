@@ -93,19 +93,7 @@ public class MovieCell extends ListCell<Movie> {
         }
 
     }
-    public MovieCell() {
-        super();
-        Node watchlistBtn = new Button("Add to Watchlist");
-        watchlistBtn.setOnMouseClicked(mouseEvent -> {
-            ClickEventHandler<Movie> addToWatchlistClicked = null;
-            try {
-                addToWatchlistClicked.onClick(getItem());
-            } catch (DatabaseException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        // ... rest of code
-    }
+
 
 }
 

@@ -39,21 +39,6 @@
          </MenuBar>
         </children>
    </HBox>
-   <JFXDrawer fx:id="drawer" defaultDrawerSize="150.0" prefHeight="331.0" prefWidth="570.0" VBox.vgrow="ALWAYS">
-      <sidePane>
-         <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;">
-            <children>
-               <JFXHamburger fx:id="hamburgerMenu" styleClass="hamburger" />
-               <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: black;">
-                  <children>
-                     <JFXButton fx:id="homeBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Home" />
-                        <JFXButton fx:id="watchlistBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Watchlist" />
-                    </children>
-                </VBox>
-            </children>
-        </VBox>
-    </sidePane>
-</JFXDrawer>
    <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">
       <children>
 

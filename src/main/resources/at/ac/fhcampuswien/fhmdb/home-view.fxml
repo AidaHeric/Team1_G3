@@ -31,13 +31,15 @@
             </padding>
          </Label>
          <Label styleClass="text-white" stylesheets="@styles.css" text="Welcome to FHMDb!" />
-         <MenuBar fx:id="menuBox">
+         <!--MenuBar fx:id="menuBox">
             <menus>
-               <Menu fx:id="home" mnemonicParsing="false" text="Home"/>
-               <Menu fx:id="watchlist" mnemonicParsing="false" text="Watchlist"/>
+               <Menu fx:id="test" mnemonicParsing="false" text="Home"/>
+               <Menu fx:id="test2" mnemonicParsing="false" text="Watchlist"/>
             </menus>
-         </MenuBar>
-        </children>
+         </MenuBar-->
+         <JFXButton fx:id="homeBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Home"/>
+         <JFXButton fx:id="watchBtn" styleClass="background-yellow" stylesheets="@styles.css" text="Watchlist"/>
+      </children>
    </HBox>
    <HBox spacing="5.0" styleClass="background-black" stylesheets="@styles.css">
       <children>

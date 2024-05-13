@@ -25,7 +25,11 @@ public class WatchlistMovieEntity {
     public long getId() {
         return id;
     }
-    /*public void setApiID(int apiId) {
-        this.apiId =aApiId;
-    }*/
+
+    public String getTitle() {
+        return null;
+    }
+    public void setApiID(int apiId) {
+        this.apiId = apiId;
+    }
 }

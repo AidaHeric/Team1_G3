@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -24,6 +26,7 @@ import java.io.IOException;
 
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 
 public class HomeController implements Initializable {
@@ -59,6 +62,12 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton sortBtn;
 
+    @FXML
+    public JFXButton homeBtn;
+
+    @FXML
+    public JFXButton watchBtn;
+
     // List to store all movies and genre-filtered movies
     public List<Movie> allMovies = Movie.initializeMovies();
 
@@ -67,7 +76,6 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
-    //private WatchlistRepository watchlistRepository = new WatchlistRepository();
 
     // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
@@ -104,45 +112,33 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
 
-        /*MenuItem homeItem = new MenuItem("Go to Home");
-        homeItem.setOnAction(event -> handleHome());
-        home.getItems().add(homeItem);
-
-        MenuItem watchlistItem = new MenuItem("Go to Watchlist");
-        watchlistItem.setOnAction(event -> handleWatchlist());
-        watchlist.getItems().add(watchlistItem);*/
-
+        //Navigation
+        homeBtn.setOnAction(event -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+                scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        watchBtn.setOnAction(event -> {
+            try {
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("watchlist.fxml"));
+                Scene scene = new Scene(fxmlLoader.load(), 890, 620);
+                scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
-
-   /* private void handleWatchlist() {
-        try {
-            VBox root = FXMLLoader.load(getClass().getResource("watchlist-view.fxml"));
-            movieListView.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void handleHome() {
-        try {
-            VBox root = FXMLLoader.load(getClass().getResource("home-view.fxml"));
-            movieListView.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    public void handleMenu() {
-        try {
-            VBox root = FXMLLoader.load(getClass().getResource("watchlist-view.fxml"));
-            movieListView.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-*/
 
 
     @FXML
@@ -212,4 +208,5 @@ public class HomeController implements Initializable {
 
         observableMovies.addAll(genreFilteredMovies);
     }
+
 }

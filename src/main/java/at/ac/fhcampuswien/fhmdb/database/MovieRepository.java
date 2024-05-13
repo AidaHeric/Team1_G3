@@ -3,7 +3,6 @@ package at.ac.fhcampuswien.fhmdb.database;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
-import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.DeleteBuilder;
 
@@ -17,7 +16,7 @@ public class MovieRepository {
     Dao<MovieEntity,Long> dao;
 
     public MovieRepository() throws DatabaseException {
-        this.dao = DatabaseManager.getDatabase().dao;
+        this.dao = DatabaseManager.getDatabase().movieDao;
     }
 
     public List<MovieEntity> getAllMovies() throws DatabaseException {
@@ -62,13 +61,13 @@ public class MovieRepository {
         }
     }
 
-    public static String genresToString(List<Genre> genres) {               //TODO testen
+    public String genresToString(List<Genre> genres) {
         return genres.stream()
                 .map(Genre::name)
                 .collect(Collectors.joining(","));
     }
 
-    private MovieEntity movieToMovieEntity(Movie movie){                //TODO testen
+    public MovieEntity movieToMovieEntity(Movie movie){
         String genresString = genresToString(movie.getGenres());
         return new MovieEntity(movie.getId(),movie.getTitle(),movie.getDescription(),genresString,movie.getReleaseYear(),movie.getImgUrl(),movie.getLengthInMinutes(),movie.getRating());
     }

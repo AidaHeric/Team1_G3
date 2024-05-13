@@ -1,11 +1,11 @@
 package at.ac.fhcampuswien.fhmdb.database;
 
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistMovieEntity;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import javafx.scene.chart.PieChart;
 
 import java.sql.SQLException;
 
@@ -14,16 +14,19 @@ public class DatabaseManager {
     public static final String username = "username";
     public static final String password = "password";
     public static JdbcConnectionSource connectionSource;
-    Dao<MovieEntity, Long> dao;
+    Dao<MovieEntity, Long> movieDao;
+    Dao<WatchlistMovieEntity, Long> watchlistDao;
 
     private static DatabaseManager instance;
     private DatabaseManager() throws DatabaseException {                  //singleton, es darf nur einmal eine connection hergestellt werden
        try {
            createConnectionSource();
-           dao = DaoManager.createDao(connectionSource, MovieEntity.class);         //dao and table for db created
+           movieDao = DaoManager.createDao(connectionSource, MovieEntity.class);         //dao and table for db created
+           watchlistDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
+           TableUtils.createTableIfNotExists(connectionSource, WatchlistMovieEntity.class);
            TableUtils.createTableIfNotExists(connectionSource, MovieEntity.class);
        } catch (SQLException e) {
-            throw new DatabaseException("Failed to initalizide the database",e);
+            throw new DatabaseException("Failed to initialize the database",e);
         }
     }
 

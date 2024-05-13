@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
+import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
@@ -76,7 +78,7 @@ public class MovieCell extends ListCell<Movie> {
 
 
 
-           /* if(addButton.getParent() == null){
+            if (addButton.getParent() == null) {
                 navigationPanel.getChildren().add(addButton);
                 layout.getChildren().add(navigationPanel);
             }
@@ -84,15 +86,18 @@ public class MovieCell extends ListCell<Movie> {
                 if (movie != null) {
                     try {
                         WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity();
-                        watchlistMovieEntity.setApiID(movie.getApiId());
-                        // Set other properties of watchlistMovieEntity as needed
+                        MovieRepository movieRepository = new MovieRepository();
+                        MovieEntity movieEntity = movieRepository.movieToMovieEntity(movie);
+                        watchlistMovieEntity.setApiID(movie.getId());  // Die Datenbank-ID von MovieEntity setzen
+                        watchlistMovieEntity.setId(movieEntity.getId());   // Die externe API-ID setzen
+
                         WatchlistRepository watchlistRepo = new WatchlistRepository();
                         watchlistRepo.addWatchlistMovie(watchlistMovieEntity);
                     } catch (DatabaseException e) {
                         e.printStackTrace();
                     }
                 }
-            });*/
+            });
             //Set the graphic of the cell to the layout VBox
             setGraphic(layout);
         }

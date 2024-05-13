@@ -30,7 +30,7 @@ public class WatchlistRepository {
 
     public void addWatchlistMovie(WatchlistMovieEntity watchlistMovie) throws DatabaseException {
         try {
-            watchlistDao.create(watchlistMovie);
+            watchlistDao.update(watchlistMovie);
         } catch (SQLException e) {
             throw new DatabaseException("Error while adding watchlist movie.", e);
         }

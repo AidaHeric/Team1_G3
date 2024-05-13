@@ -71,8 +71,8 @@ public class HomeController implements Initializable {
     @FXML
     public JFXButton watchBtn;
 
-    @FXML
-    private Label errorLabel;
+    /*@FXML
+    private Label errorLabel;*/
 
     // List to store all movies and genre-filtered movies
    public List<Movie> allMovies;
@@ -96,6 +96,7 @@ public class HomeController implements Initializable {
         observableMovies.addAll(allMovies);
 
         movieListView.setItems(observableMovies);
+        movieListView.setCellFactory(param -> new MovieCell());
 
 
         genreComboBox.getItems().addAll(Genre.values());
@@ -118,7 +119,6 @@ public class HomeController implements Initializable {
                 .toList());
 
 
-        movieListView.setCellFactory(param -> new MovieCell());
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
 
@@ -132,7 +132,7 @@ public class HomeController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
-                errorLabel.setText("Error while navigating to home page" + e.getMessage());
+                System.out.println("ERROR: " + e.getMessage());
             }
         });
         watchBtn.setOnAction(event -> {
@@ -144,7 +144,7 @@ public class HomeController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
-                errorLabel.setText("Error while navigating to watchlist page" + e.getMessage());
+                System.out.println("ERROR: " + e.getMessage());
             }
         });
 
@@ -165,7 +165,7 @@ public class HomeController implements Initializable {
             observableMovies.clear();
             observableMovies.addAll(movielist);
         } catch (MovieAPIException e) {
-            errorLabel.setText("Error while searching movies");
+            System.out.println("ERROR: " + e.getMessage());
         }
     }
 

@@ -76,7 +76,7 @@ public class MovieRepository {
 
     public Movie toMovies(MovieEntity movieEntity) {
 
-        return new Movie(String.valueOf(movieEntity.getId()), movieEntity.getTitle(), movieEntity.getDescription(),
+        return new Movie(String.valueOf(movieEntity.getApiId()), movieEntity.getTitle(), movieEntity.getDescription(),
                 convertGenresToList(movieEntity.getGenres()), movieEntity.getReleaseYear(), movieEntity.getLengthInMinutes(),
                 movieEntity.getImgUrl(),movieEntity.getRating());
     }

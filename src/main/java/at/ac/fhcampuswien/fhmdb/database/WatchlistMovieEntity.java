@@ -8,9 +8,9 @@ public class WatchlistMovieEntity {
     @DatabaseField(id = true)
     private long id;
     @DatabaseField
-    private int apiId;
+    private String apiId;
 
-    public WatchlistMovieEntity(long id, int apiId) {
+    public WatchlistMovieEntity(long id, String apiId) {
         this.id = id;
         this.apiId = apiId;
     }
@@ -18,7 +18,7 @@ public class WatchlistMovieEntity {
     public WatchlistMovieEntity() {
     }
 
-    public int getApiId() {
+    public String getApiId() {
         return apiId;
     }
 
@@ -29,7 +29,12 @@ public class WatchlistMovieEntity {
     public String getTitle() {
         return null;
     }
-    public void setApiID(int apiId) {
+    public void setApiID(String apiId) {
         this.apiId = apiId;
     }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }
+

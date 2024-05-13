@@ -15,11 +15,11 @@ import static at.ac.fhcampuswien.fhmdb.database.DatabaseManager.connectionSource
 public class WatchlistRepository {
     private Dao<WatchlistMovieEntity, Integer> watchlistDao;
 
-    public WatchlistRepository() {
+    public WatchlistRepository() throws DatabaseException {
         try {
             watchlistDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DatabaseException("Error while creating watchlist dao.", e);
         }
     }
 

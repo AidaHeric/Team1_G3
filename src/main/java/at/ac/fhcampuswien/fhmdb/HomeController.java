@@ -1,5 +1,7 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieAPIException;
 import at.ac.fhcampuswien.fhmdb.models.*;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.*;
@@ -18,6 +20,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import at.ac.fhcampuswien.fhmdb.ui.ClickEventHandler;
+import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.*;
@@ -67,6 +70,9 @@ public class HomeController implements Initializable {
 
     @FXML
     public JFXButton watchBtn;
+
+    @FXML
+    private Label errorLabel;
 
     // List to store all movies and genre-filtered movies
     public List<Movie> allMovies = Movie.initializeMovies();
@@ -122,7 +128,7 @@ public class HomeController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                errorLabel.setText("Error while navigating to home page");
             }
         });
         watchBtn.setOnAction(event -> {
@@ -134,7 +140,7 @@ public class HomeController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
-                e.printStackTrace();
+                errorLabel.setText("Error while navigating to watchlist page");
             }
         });
 
@@ -143,16 +149,20 @@ public class HomeController implements Initializable {
 
     @FXML
     public void handleSearch() {
-        String query = searchField.getText().toLowerCase();
-        Genre genre = genreComboBox.getValue();
-        int year = releaseYearComboBox.getValue();
-        double rating = this.ratingComboBox.getValue();
+        try {
+            String query = searchField.getText().toLowerCase();
+            Genre genre = genreComboBox.getValue();
+            int year = releaseYearComboBox.getValue();
+            double rating = this.ratingComboBox.getValue();
 
-        // Search movies using API and update observable list
-        List<Movie> movielist = movieAPI.searchMovies(query,genre, year, rating);
+            // Search movies using API and update observable list
+            List<Movie> movielist = movieAPI.searchMovies(query, genre, year, rating);
 
-        observableMovies.clear();
-        observableMovies.addAll(movielist);
+            observableMovies.clear();
+            observableMovies.addAll(movielist);
+        } catch (MovieAPIException e) {
+            errorLabel.setText("Error while searching movies");
+        }
     }
 
     @FXML

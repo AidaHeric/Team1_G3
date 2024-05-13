@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieAPIException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
@@ -13,7 +14,7 @@ public class MovieAPITest {
 
     //Test for searching movies wit specific parameters
     @Test
-    public void testSearchMovies() {
+    public void testSearchMovies() throws MovieAPIException {
         //Create an instance of MovieAPI
         MovieAPI movieAPI = new MovieAPI();
 
@@ -58,7 +59,7 @@ public class MovieAPITest {
 
     //Test for searching movies with specific genre
     @Test
-    public void testSearchGenre() {
+    public void testSearchGenre() throws MovieAPIException {
             //Create an instance of MovieAPI
             MovieAPI movieAPI = new MovieAPI();
 
@@ -75,7 +76,7 @@ public class MovieAPITest {
         }
 
         //Test for searching movies with specific query
-        @Test void testQuery() {
+        @Test void testQuery() throws MovieAPIException {
                 //Create an instance of MovieAPI
                 MovieAPI movieAPI = new MovieAPI();
 

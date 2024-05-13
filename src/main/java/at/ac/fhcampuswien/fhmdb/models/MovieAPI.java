@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieAPIException;
 import com.google.gson.Gson;
 import okhttp3.*;
 import com.google.gson.reflect.TypeToken;
@@ -42,7 +43,7 @@ public class MovieAPI {
     }
 
     //Search movies based on the query, genre, release year and rating
-    public List<Movie> searchMovies(String query, Genre genre, int releaseYear, double rating) {
+    public List<Movie> searchMovies(String query, Genre genre, int releaseYear, double rating) throws MovieAPIException {
         try {
             //Build the URL with query parameters based on the provided parameters
             HttpUrl.Builder URLBuilder = HttpUrl.parse(MoviesURL).newBuilder();
@@ -71,8 +72,7 @@ public class MovieAPI {
             //Execute the request and return the result
             return executeRequest(request);
         } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>(); //Return an empty list in cas of an error
+            throw new MovieAPIException("Error while searching movies", e);
         }
     }
 

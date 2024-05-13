@@ -128,7 +128,7 @@ public class HomeController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
-                errorLabel.setText("Error while navigating to home page");
+                errorLabel.setText("Error while navigating to home page" + e.getMessage());
             }
         });
         watchBtn.setOnAction(event -> {
@@ -140,7 +140,7 @@ public class HomeController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (IOException e) {
-                errorLabel.setText("Error while navigating to watchlist page");
+                errorLabel.setText("Error while navigating to watchlist page" + e.getMessage());
             }
         });
 

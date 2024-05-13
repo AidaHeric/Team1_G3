@@ -1,4 +1,10 @@
 package at.ac.fhcampuswien.fhmdb.models;
+import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
+import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
+import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,9 +35,26 @@ public class Movie {
         this.rating = rating;
     }
 
-    public static List<Movie> initializeMovies(){
-        MovieAPI movieAPI = new MovieAPI();                 //we now get movies from API
-        List<Movie> movies = movieAPI.getAllMovies();
+    public Movie(String id, String title, String description, List<Genre> genres, int releaseYear, int lengthInMinutes, String imgUrl, double rating){
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.genres = genres;
+        this.releaseYear = releaseYear;
+        this.lengthInMinutes = lengthInMinutes;
+        this.imgUrl = imgUrl;
+        this.rating = rating;
+    }
+
+    public static List<Movie> initializeMovies() throws DatabaseException {
+        MovieRepository movieRepository = new MovieRepository();
+        List<Movie> movies = new ArrayList<>();
+        List<MovieEntity> movieEntities = movieRepository.getAllMovies();
+
+        for (MovieEntity movieEntity : movieEntities) {
+            Movie movie = movieRepository.toMovies(movieEntity);
+            movies.add(movie);
+        }
         return movies;
     }
 

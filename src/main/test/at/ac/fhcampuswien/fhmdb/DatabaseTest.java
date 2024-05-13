@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb;
 
+import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Genre;
@@ -49,5 +50,14 @@ public class DatabaseTest {
         assertEquals("class at.ac.fhcampuswien.fhmdb.database.MovieEntity",actual);
 
     }
+
+    @Test
+    public void testGenreStringToList(){
+        String genreString = "ANIMATION,FAMILY";
+        List<Genre> genreList = testing.convertGenresToList(genreString);
+
+        assertEquals(List.of(Genre.ANIMATION,Genre.FAMILY),genreList);
+    }
+
 
 }

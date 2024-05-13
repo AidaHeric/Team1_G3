@@ -75,7 +75,7 @@ public class HomeController implements Initializable {
     private Label errorLabel;
 
     // List to store all movies and genre-filtered movies
-    public List<Movie> allMovies = Movie.initializeMovies();
+   public List<Movie> allMovies;
 
     public List<Movie> genreFilteredMovies = new ArrayList<>();
 
@@ -87,8 +87,12 @@ public class HomeController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
 
-        // GET movies from API
-        allMovies = Movie.initializeMovies();
+        // GET movies from Database
+        try {
+            allMovies = Movie.initializeMovies();
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
         observableMovies.addAll(allMovies);
 
         movieListView.setItems(observableMovies);

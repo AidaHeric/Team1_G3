@@ -6,7 +6,10 @@ import at.ac.fhcampuswien.fhmdb.models.Movie;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @DatabaseTable(tableName = "movie")
@@ -30,23 +33,7 @@ public class MovieEntity {
     @DatabaseField
     double rating;
 
-    //TODO: Implement these methods?
-    /*public static String genresToString(List<Genre> genres) {
-        return genres.stream()
-                .map(Genre::name)
-                .collect(Collectors.joining(","));
-    }
 
-    List<MovieEntity> fromMovies(List<Movie> movies) {
-
-        return null;
-    }
-
-    List<Movie> toMovies(List<MovieEntity> movieEntities) {
-
-        return null;
-    }
-*/
 
     public MovieEntity() {
     }

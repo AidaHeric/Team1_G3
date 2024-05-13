@@ -1,6 +1,5 @@
 package at.ac.fhcampuswien.fhmdb;
 
-import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.*;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
 import com.jfoenix.controls.*;
@@ -68,7 +67,7 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
-    private WatchlistRepository watchlistRepository = new WatchlistRepository();
+    //private WatchlistRepository watchlistRepository = new WatchlistRepository();
 
     // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
@@ -105,18 +104,18 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
 
-        MenuItem homeItem = new MenuItem("Go to Home");
+        /*MenuItem homeItem = new MenuItem("Go to Home");
         homeItem.setOnAction(event -> handleHome());
         home.getItems().add(homeItem);
 
         MenuItem watchlistItem = new MenuItem("Go to Watchlist");
         watchlistItem.setOnAction(event -> handleWatchlist());
-        watchlist.getItems().add(watchlistItem);
+        watchlist.getItems().add(watchlistItem);*/
 
 
     }
 
-    private void handleWatchlist() {
+   /* private void handleWatchlist() {
         try {
             VBox root = FXMLLoader.load(getClass().getResource("watchlist-view.fxml"));
             movieListView.getScene().setRoot(root);
@@ -143,7 +142,7 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
     }
-
+*/
 
 
     @FXML
@@ -213,14 +212,4 @@ public class HomeController implements Initializable {
 
         observableMovies.addAll(genreFilteredMovies);
     }
-    private final ClickEventHandler onAddToWatchlistClicked = (clickedItem) ->
-    {
-        try {
-            watchlistRepository.addWatchlistMovie((WatchlistMovieEntity) clickedItem);
-        } catch (DatabaseException e) {
-            throw new RuntimeException(e);
-        }
-    };
-
-
 }

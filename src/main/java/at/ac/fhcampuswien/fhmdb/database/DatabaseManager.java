@@ -14,7 +14,7 @@ public class DatabaseManager {
     public static final String password = "password";
     public static JdbcConnectionSource connectionSource;
     Dao<MovieEntity, Long> movieDao;
-    Dao<WatchlistMovieEntity, Long> watchlistDao;
+    public Dao<WatchlistMovieEntity, Long> watchlistDao;
 
     private static DatabaseManager instance;
     private DatabaseManager() throws DatabaseException {                  //singleton, es darf nur einmal eine connection hergestellt werden

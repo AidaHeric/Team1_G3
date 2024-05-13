@@ -1,7 +1,9 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
+import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
+import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -31,7 +33,7 @@ public class MovieCell extends ListCell<Movie> {
     private final VBox layout = new VBox(header,year, description, genresAndRating);
     public Button removeButton = new Button("Remove");
     VBox navigationPanel = new VBox();
-    Button navigateButton = new Button("Watchlist");
+    Button addButton = new Button("Watchlist");
 
 
     @Override
@@ -73,17 +75,20 @@ public class MovieCell extends ListCell<Movie> {
             layout.alignmentProperty().set(Pos.CENTER_LEFT);
 
 
-            //Aida hat auskommentiert
-            //TODO
-            /*if(removeButton.getParent() == null){
-                navigationPanel.getChildren().add(removeButton);
+
+           /* if(addButton.getParent() == null){
+                navigationPanel.getChildren().add(addButton);
                 layout.getChildren().add(navigationPanel);
             }
-            removeButton.setOnAction(event -> {
+            addButton.setOnAction(event -> {
                 if (movie != null) {
                     try {
-                        WatchlistRepository.deleteWatchlistMovie(WatchlistMovieEntity,);
-                    } catch (Exception e) {
+                        WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity();
+                        watchlistMovieEntity.setApiID(movie.getApiId());
+                        // Set other properties of watchlistMovieEntity as needed
+                        WatchlistRepository watchlistRepo = new WatchlistRepository();
+                        watchlistRepo.addWatchlistMovie(watchlistMovieEntity);
+                    } catch (DatabaseException e) {
                         e.printStackTrace();
                     }
                 }

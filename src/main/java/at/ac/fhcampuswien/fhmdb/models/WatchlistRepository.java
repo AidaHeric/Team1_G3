@@ -1,5 +1,6 @@
 package at.ac.fhcampuswien.fhmdb.models;
 
+import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import com.j256.ormlite.dao.Dao;
@@ -13,14 +14,10 @@ import static at.ac.fhcampuswien.fhmdb.database.DatabaseManager.connectionSource
 
 
 public class WatchlistRepository {
-    private Dao<WatchlistMovieEntity, Integer> watchlistDao;
+    Dao<WatchlistMovieEntity, Long> watchlistDao;
 
     public WatchlistRepository() throws DatabaseException {
-        try {
-            watchlistDao = DaoManager.createDao(connectionSource, WatchlistMovieEntity.class);
-        } catch (SQLException e) {
-            throw new DatabaseException("Error while creating watchlist dao.", e);
-        }
+        this.watchlistDao = DatabaseManager.getDatabase().watchlistDao;
     }
 
     public List<WatchlistMovieEntity> getAllWatchlistMovies() throws DatabaseException {

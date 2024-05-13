@@ -70,9 +70,7 @@ public class Movie {
         return genres;
     }
 
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     public int getReleaseYear() {
         return releaseYear;

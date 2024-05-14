@@ -32,8 +32,7 @@ public class WatchlistRepository {
         try {
             watchlistDao.create(watchlistMovie);
         } catch (SQLException e) {
-            e.printStackTrace();
-            //throw new DatabaseException("Error while adding watchlist movie.", e);
+            throw new DatabaseException("Error while adding watchlist movie.", e);
         }
     }
 

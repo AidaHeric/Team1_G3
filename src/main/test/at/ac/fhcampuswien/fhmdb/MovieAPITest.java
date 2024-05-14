@@ -27,7 +27,7 @@ public class MovieAPITest {
 
     //Test for getting all movies
     @Test
-    public void testGetAllMovies() {
+    public void testGetAllMovies() throws MovieAPIException {
         //Create an instance of MovieAPI
         MovieAPI movieAPI = new MovieAPI();
 
@@ -43,7 +43,7 @@ public class MovieAPITest {
 
     //Test for checking if all movies are parsed from API
     @Test
-    public void testExpectedMovieAmount() {
+    public void testExpectedMovieAmount() throws MovieAPIException {
         //Create an instance of MovieAPI
         MovieAPI movieAPI = new MovieAPI();
 

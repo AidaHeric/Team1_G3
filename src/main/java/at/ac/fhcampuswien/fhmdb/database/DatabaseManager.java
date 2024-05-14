@@ -37,7 +37,11 @@ public class DatabaseManager {
         return instance;
     }
 
-    public static void createConnectionSource() throws SQLException {           //actual connection to database
-        connectionSource = new JdbcConnectionSource(DB_URL,username,password);   //ohne catch, weil ein ausgegebener Fehler hier auch nichts mehr bringt
+    public static void createConnectionSource() throws DatabaseException {
+        try {                                                                       //actual connection to database
+            connectionSource = new JdbcConnectionSource(DB_URL, username, password);
+        } catch (SQLException e) {
+            throw new DatabaseException("Failed to connect to the database",e);
+        }
     }
 }

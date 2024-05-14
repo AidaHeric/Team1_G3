@@ -35,8 +35,7 @@ public class MovieRepository {
             DeleteBuilder<MovieEntity, Long> deleteBuilder = dao.deleteBuilder();
             return dao.delete(deleteBuilder.prepare());
         } catch (SQLException e) {
-            System.out.println("Error removing all movies: " + e.getMessage());
-            return 0;
+            throw new DatabaseException("Error while removing all movies.", e);
         }
     }
 
@@ -44,8 +43,7 @@ public class MovieRepository {
         try{
             return dao.queryForEq("apiId", apiId).get(0);
         } catch (SQLException e) {
-            System.out.println("Error getting movie with ID " + "movieId" + ": " + e.getMessage());
-            return null;
+            throw new DatabaseException("Error while getting this movies.", e);
         }
     }
 
@@ -58,8 +56,7 @@ public class MovieRepository {
             dao.create(movieEntities);
             return movieEntities.size();
         } catch (SQLException e) {
-            System.out.println("Error, couldn't add the movies: " + e.getMessage());
-            return 0;
+            throw new DatabaseException("Error while adding movies.", e);
         }
     }
 
@@ -85,13 +82,7 @@ public class MovieRepository {
         return Arrays.stream(genresStr.split(","))
                 .map(String::trim)
                 .map(genreStr -> {
-                    try {
                         return Genre.valueOf(genreStr.toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        // Log this error or handle it as per your requirement
-                        System.err.println("Invalid genre: " + genreStr);
-                        return null;
-                    }
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());

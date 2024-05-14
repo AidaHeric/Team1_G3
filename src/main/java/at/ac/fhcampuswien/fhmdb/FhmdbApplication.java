@@ -3,6 +3,7 @@ package at.ac.fhcampuswien.fhmdb;
 import at.ac.fhcampuswien.fhmdb.database.DatabaseManager;
 import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
+import at.ac.fhcampuswien.fhmdb.exceptions.MovieAPIException;
 import at.ac.fhcampuswien.fhmdb.models.MovieAPI;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,9 +27,13 @@ public class FhmdbApplication extends Application {
         MovieRepository movieRepository = new MovieRepository();
         MovieAPI movieAPI = new MovieAPI();
         DatabaseManager.getDatabase();
-        if (movieAPI.getAllMovies() != null) {
-            movieRepository.removeAll();
-            movieRepository.addAllMovies(movieAPI.getAllMovies());
+        try {
+            if (movieAPI.getAllMovies() != null) {
+                movieRepository.removeAll();
+                movieRepository.addAllMovies(movieAPI.getAllMovies());
+            }
+        } catch (MovieAPIException e) {
+            System.out.println("Network connection failed" + e.getMessage());
         }
     }
 

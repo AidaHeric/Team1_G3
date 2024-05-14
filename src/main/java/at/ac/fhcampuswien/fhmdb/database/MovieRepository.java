@@ -40,11 +40,11 @@ public class MovieRepository {
         }
     }
 
-    public MovieEntity getMovie(Long movieId) throws DatabaseException {               ////TODO: testen
+    public MovieEntity getMovie(String apiId) throws DatabaseException {               ////TODO: testen
         try{
-            return dao.queryForId(movieId);
+            return dao.queryForEq("apiId", apiId).get(0);
         } catch (SQLException e) {
-            System.out.println("Error getting movie with ID " + movieId + ": " + e.getMessage());
+            System.out.println("Error getting movie with ID " + "movieId" + ": " + e.getMessage());
             return null;
         }
     }

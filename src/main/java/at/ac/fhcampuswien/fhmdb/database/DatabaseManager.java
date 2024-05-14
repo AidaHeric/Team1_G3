@@ -29,12 +29,6 @@ public class DatabaseManager {
         }
     }
 
-    /*public void testDB() throws SQLException {
-        MovieEntity newMovie = new MovieEntity("1","Titletest", "this test", "genres", 1994, "url", 19, 1);
-        dao.create(newMovie);
-
-    }*/
-
     public static DatabaseManager getDatabase() throws DatabaseException {      //only create instance, if first one
         if(instance == null){
             instance = new DatabaseManager();

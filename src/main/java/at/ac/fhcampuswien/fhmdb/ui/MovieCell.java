@@ -86,10 +86,8 @@ public class MovieCell extends ListCell<Movie> {
                 if (movie != null) {
                     try {
                         WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity();
-                        MovieRepository movieRepository = new MovieRepository();
-                        MovieEntity movieEntity = movieRepository.movieToMovieEntity(movie);
+
                         watchlistMovieEntity.setApiID(movie.getId());  // Die Datenbank-ID von MovieEntity setzen
-                        watchlistMovieEntity.setId(movieEntity.getId());   // Die externe API-ID setzen
 
                         WatchlistRepository watchlistRepo = new WatchlistRepository();
                         watchlistRepo.addWatchlistMovie(watchlistMovieEntity);

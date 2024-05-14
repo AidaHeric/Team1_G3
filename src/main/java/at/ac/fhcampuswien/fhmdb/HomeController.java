@@ -15,12 +15,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import at.ac.fhcampuswien.fhmdb.ui.ClickEventHandler;
-import javafx.scene.control.Label;
 
 import java.net.URL;
 import java.util.*;
@@ -122,29 +118,14 @@ public class HomeController implements Initializable {
         searchBtn.setOnAction(event -> handleSearch());
         sortBtn.setOnAction(event -> handleSort());
 
-        //Navigation
-        homeBtn.setOnAction(event -> {
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("home-view.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 890, 620);
-                scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
-            } catch (IOException e) {
-                System.out.println("ERROR: " + e.getMessage());
-            }
-        });
         watchBtn.setOnAction(event -> {
             try {
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("watchlist.fxml"));
+                FXMLLoader fxmlLoader = new FXMLLoader(FhmdbApplication.class.getResource("watchlist.fxml"));
                 Scene scene = new Scene(fxmlLoader.load(), 890, 620);
-                scene.getStylesheets().add(Objects.requireNonNull(FhmdbApplication.class.getResource("styles.css")).toExternalForm());
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(scene);
-                stage.show();
+                Stage root = (Stage) watchBtn.getScene().getWindow();
+                root.setScene(scene);
             } catch (IOException e) {
-                System.out.println("ERROR: " + e.getMessage());
+                System.out.println("Egal");
             }
         });
 

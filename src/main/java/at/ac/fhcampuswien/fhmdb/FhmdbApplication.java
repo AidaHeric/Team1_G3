@@ -30,9 +30,6 @@ public class FhmdbApplication extends Application {
             movieRepository.removeAll();
             movieRepository.addAllMovies(movieAPI.getAllMovies());
         }
-
-
-        //DatabaseManager.getDatabase().testDB();
     }
 
     public static void main(String[] args) {

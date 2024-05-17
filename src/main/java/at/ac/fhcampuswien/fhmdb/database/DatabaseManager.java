@@ -13,7 +13,7 @@ public class DatabaseManager {
     public static final String username = "username";
     public static final String password = "password";
     public static JdbcConnectionSource connectionSource;
-    Dao<MovieEntity, Long> movieDao;
+    public Dao<MovieEntity, Long> movieDao;
     public Dao<WatchlistMovieEntity, Long> watchlistDao;
 
     private static DatabaseManager instance;

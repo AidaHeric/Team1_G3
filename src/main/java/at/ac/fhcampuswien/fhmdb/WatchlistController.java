@@ -7,6 +7,7 @@ import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import at.ac.fhcampuswien.fhmdb.ui.MovieCell;
+import at.ac.fhcampuswien.fhmdb.ui.WatchlistCell;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
@@ -36,6 +37,7 @@ public class WatchlistController {
     public void initialize() throws DatabaseException {
 
         MovieRepository movieRepository = new MovieRepository();
+        //movieListView.setCellFactory(param -> new WatchlistCell());
         List<Movie> watchlistMovies = new ArrayList<>();
         List<WatchlistMovieEntity> watchlistList = fetchWatchlistMovies();
         for (WatchlistMovieEntity watchlistmovieEntity : watchlistList){
@@ -52,7 +54,13 @@ public class WatchlistController {
         movieListView.setItems(observableList);
 
         // Set the cell factory of the JFXListView
-        movieListView.setCellFactory(param -> new MovieCell());
+        movieListView.setCellFactory(param -> {
+            try {
+                return new WatchlistCell();
+            } catch (DatabaseException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
 
         //Navigation

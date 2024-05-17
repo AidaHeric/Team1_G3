@@ -25,8 +25,7 @@ public class MovieRepository {
         try {
             return dao.queryForAll();
         } catch(SQLException e){
-            System.out.println("Error getting all movies:" + e.getMessage());
-            return null;
+            throw new DatabaseException ("Error getting all movies:" + e.getMessage());
         }
     }
 
@@ -39,7 +38,7 @@ public class MovieRepository {
         }
     }
 
-    public MovieEntity getMovie(String apiId) throws DatabaseException {               ////TODO: testen
+    public MovieEntity getMovie(String apiId) throws DatabaseException {
         try{
             return dao.queryForEq("apiId", apiId).get(0);
         } catch (SQLException e) {
@@ -47,7 +46,7 @@ public class MovieRepository {
         }
     }
 
-    public int addAllMovies(List<Movie> movies) throws DatabaseException {          //TODO: testen
+    public int addAllMovies(List<Movie> movies) throws DatabaseException {
         List<MovieEntity> movieEntities = new ArrayList<>();
         try {
             for (Movie movie : movies) {

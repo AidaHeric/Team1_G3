@@ -78,7 +78,6 @@ public class HomeController implements Initializable {
     // Observable list of movies for dynamic UI updates
     public ObservableList<Movie> observableMovies = FXCollections.observableArrayList();   // automatically updates corresponding UI elements when underlying data changes
 
-
     // Initialize method for the controller
     public void initialize(URL location, ResourceBundle resources) {
         observableMovies = FXCollections.observableArrayList();
@@ -89,6 +88,7 @@ public class HomeController implements Initializable {
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
+
         observableMovies.addAll(allMovies);
 
         movieListView.setItems(observableMovies);
@@ -125,7 +125,7 @@ public class HomeController implements Initializable {
                 Stage root = (Stage) watchBtn.getScene().getWindow();
                 root.setScene(scene);
             } catch (IOException e) {
-                System.out.println("Egal");
+                System.out.println("Can not open the watchlist");
             }
         });
 

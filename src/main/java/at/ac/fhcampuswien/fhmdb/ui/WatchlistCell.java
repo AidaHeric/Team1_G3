@@ -1,14 +1,12 @@
 package at.ac.fhcampuswien.fhmdb.ui;
 
-import at.ac.fhcampuswien.fhmdb.database.MovieEntity;
-import at.ac.fhcampuswien.fhmdb.database.MovieRepository;
 import at.ac.fhcampuswien.fhmdb.database.WatchlistMovieEntity;
 import at.ac.fhcampuswien.fhmdb.exceptions.DatabaseException;
 import at.ac.fhcampuswien.fhmdb.models.Movie;
 import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.Background;
@@ -16,12 +14,8 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Button;
 
-
-// Custom implementation for displaying Movie objects
-public class MovieCell extends ListCell<Movie> {
-    //UI components
+public class WatchlistCell extends ListCell<Movie> {
     private final Label title = new Label();
     private final Label detail = new Label();
     //private final VBox layout = new VBox(title, detail);
@@ -33,14 +27,18 @@ public class MovieCell extends ListCell<Movie> {
     private final HBox description = new HBox(detail);
     private final HBox genresAndRating = new HBox(genre, rating);
     private final VBox layout = new VBox(header,year, description, genresAndRating);
-    VBox navigationPanel = new VBox();
-    Button addButton = new Button("Watchlist");
+    VBox navWatchPanel = new VBox();
+    public Button removeButton = new Button("Remove");
     WatchlistRepository watchlistRepository;
-    ClickEventHandler<Movie> onAddButtonClickHandler = (Movie movie) -> {
+    public WatchlistCell() throws DatabaseException {
+        this.watchlistRepository = new WatchlistRepository();
+    }
+
+    ClickEventHandler<Movie> onRemoveButtonClickHandler = (Movie movie) -> {
         WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity();
         watchlistMovieEntity.setApiID(movie.getId());
         try {
-            watchlistRepository.addWatchlistMovie(watchlistMovieEntity);
+            watchlistRepository.deleteWatchlistMovie(watchlistMovieEntity);
         } catch (DatabaseException e) {
             e.printStackTrace();
         }
@@ -56,7 +54,7 @@ public class MovieCell extends ListCell<Movie> {
         } else {
             this.getStyleClass().add("movie-cell");
             title.setText(movie.getTitle());
-            releaseYear.setText("Released: " + Integer.toString(movie.getReleaseYear()));
+            releaseYear.setText("Released: " + movie.getReleaseYear());
             detail.setText(
                     movie.getDescription() != null
                             ? movie.getDescription()
@@ -84,34 +82,34 @@ public class MovieCell extends ListCell<Movie> {
             layout.spacingProperty().set(10);
             layout.alignmentProperty().set(Pos.CENTER_LEFT);
 
-            addButton.setOnAction(event -> onAddButtonClickHandler.onClick(movie));
-            if (!navigationPanel.getChildren().contains(addButton)) {
-                navigationPanel.getChildren().add(addButton);
-                layout.getChildren().add(navigationPanel);
+            removeButton.setOnAction(event -> onRemoveButtonClickHandler.onClick(movie));
+            if (!navWatchPanel.getChildren().contains(removeButton)) {
+                navWatchPanel.getChildren().add(removeButton);
+                if (!layout.getChildren().contains(navWatchPanel)) {
+                    layout.getChildren().add(navWatchPanel);
+                }
             }
 
             setGraphic(layout);
 
-
-            if (addButton.getParent() == null) {
-                navigationPanel.getChildren().add(addButton);
-                layout.getChildren().add(navigationPanel);
+            if (removeButton.getParent() == null) {
+                navWatchPanel.getChildren().add(removeButton);
+                layout.getChildren().add(navWatchPanel);
             }
-            addButton.setOnAction(event -> {
+
+            removeButton.setOnAction(event -> {
                 try {
                     WatchlistMovieEntity watchlistMovieEntity = new WatchlistMovieEntity();
-                    watchlistMovieEntity.setApiID(movie.getId());  // Die Datenbank-ID von MovieEntity setzen
+                    watchlistMovieEntity.setApiID(movie.getId());
                     WatchlistRepository watchlistRepo = new WatchlistRepository();
-                    watchlistRepo.addWatchlistMovie(watchlistMovieEntity);
+                    watchlistRepo.deleteWatchlistMovie(watchlistMovieEntity);
+                    watchlistRepository.deleteWatchlistMovie(watchlistMovieEntity);
                 } catch (DatabaseException e) {
                     e.printStackTrace();
                 }
             });
-                //Set the graphic of the cell to the layout VBox
-                setGraphic(layout);
+
             }
-
         }
-
     }
 

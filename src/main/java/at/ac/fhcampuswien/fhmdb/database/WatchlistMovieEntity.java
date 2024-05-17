@@ -14,6 +14,14 @@ public class WatchlistMovieEntity {
         this.id = id;
         this.apiId = apiId;
     }
+    @DatabaseField
+    private String title;
+    public String getTitle() {
+        return title;
+    }
+    public void setTitle(String title) {
+        this.title = this.title;
+    }
 
     public WatchlistMovieEntity() {
     }
@@ -26,9 +34,9 @@ public class WatchlistMovieEntity {
         return id;
     }
 
-    public String getTitle() {
+    /*public String getTitle() {
         return null;
-    }
+    }*/
     public void setApiID(String apiId) {
         this.apiId = apiId;
     }

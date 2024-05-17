@@ -9,14 +9,12 @@ import at.ac.fhcampuswien.fhmdb.models.WatchlistRepository;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
+import javafx.scene.control.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Button;
 
 
 // Custom implementation for displaying Movie objects
@@ -103,8 +101,10 @@ public class MovieCell extends ListCell<Movie> {
                     watchlistMovieEntity.setApiID(movie.getId());  // Die Datenbank-ID von MovieEntity setzen
                     WatchlistRepository watchlistRepo = new WatchlistRepository();
                     watchlistRepo.addWatchlistMovie(watchlistMovieEntity);
+                    messageForUser(Alert.AlertType.INFORMATION, "Movie added to watchlist");
                 } catch (DatabaseException e) {
                     e.printStackTrace();
+                    messageForUser(Alert.AlertType.ERROR, "Failed to add movie to watchlist: " + e.getMessage());
                 }
             });
                 //Set the graphic of the cell to the layout VBox
@@ -112,6 +112,11 @@ public class MovieCell extends ListCell<Movie> {
             }
 
         }
+    private void messageForUser(Alert.AlertType alertType, String message) {
+        Alert alert = new Alert(alertType, message);
+        alert.showAndWait()
+                .filter(response -> response == ButtonType.OK);
+    }
 
     }
 
